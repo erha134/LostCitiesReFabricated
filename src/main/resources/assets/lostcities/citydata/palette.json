@@ -76,7 +76,7 @@
         },
         {
           "factor": 1.0,
-          "palette": "glass_pane"
+          "palette": "glass_full"
         },
         {
           "factor": 1.0,
@@ -84,7 +84,7 @@
         },
         {
           "factor": 1.0,
-          "palette": "glass_pane_white"
+          "palette": "glass_full_white"
         },
         {
           "factor": 1.0,
@@ -92,7 +92,7 @@
         },
         {
           "factor": 1.0,
-          "palette": "glass_pane_blue"
+          "palette": "glass_full_blue"
         },
         {
           "factor": 1.0,
@@ -100,7 +100,7 @@
         },
         {
           "factor": 1.0,
-          "palette": "glass_pane_light_blue"
+          "palette": "glass_full_light_blue"
         },
         {
           "factor": 1.0,
@@ -108,7 +108,7 @@
         },
         {
           "factor": 1.0,
-          "palette": "glass_pane_gray"
+          "palette": "glass_full_gray"
         }
       ],
       [
@@ -280,7 +280,7 @@
       },
       {
         "char": "`",
-        "block": "minecraft:glass_pane"
+        "block": "minecraft:glass"
       },
       {
         "char": "a",
@@ -290,7 +290,7 @@
   },
   {
     "type": "palette",
-    "name": "glass_pane",
+    "name": "glass",
     "palette": [
       {
         "char": "+",
@@ -298,11 +298,11 @@
       },
       {
         "char": "`",
-        "block": "minecraft:glass_pane"
+        "block": "minecraft:glass"
       },
       {
         "char": "a",
-        "block": "minecraft:glass_pane"
+        "block": "minecraft:glass"
       }
     ]
   },
@@ -316,7 +316,7 @@
       },
       {
         "char": "`",
-        "block": "minecraft:stained_glass_pane"
+        "block": "minecraft:stained_glass"
       },
       {
         "char": "a",
@@ -326,7 +326,7 @@
   },
   {
     "type": "palette",
-    "name": "glass_pane_white",
+    "name": "glass_white",
     "palette": [
       {
         "char": "+",
@@ -334,11 +334,11 @@
       },
       {
         "char": "`",
-        "block": "minecraft:stained_glass_pane"
+        "block": "minecraft:stained_glass"
       },
       {
         "char": "a",
-        "block": "minecraft:stained_glass_pane"
+        "block": "minecraft:stained_glass"
       }
     ]
   },
@@ -352,7 +352,7 @@
       },
       {
         "char": "`",
-        "block": "minecraft:stained_glass_pane@7"
+        "block": "minecraft:stained_glass@7"
       },
       {
         "char": "a",
@@ -362,7 +362,7 @@
   },
   {
     "type": "palette",
-    "name": "glass_pane_gray",
+    "name": "glass_gray",
     "palette": [
       {
         "char": "+",
@@ -370,11 +370,11 @@
       },
       {
         "char": "`",
-        "block": "minecraft:stained_glass_pane@7"
+        "block": "minecraft:stained_glass@7"
       },
       {
         "char": "a",
-        "block": "minecraft:stained_glass_pane@7"
+        "block": "minecraft:stained_glass@7"
       }
     ]
   },
@@ -388,7 +388,7 @@
       },
       {
         "char": "`",
-        "block": "minecraft:stained_glass_pane@11"
+        "block": "minecraft:stained_glass@11"
       },
       {
         "char": "a",
@@ -398,7 +398,7 @@
   },
   {
     "type": "palette",
-    "name": "glass_pane_blue",
+    "name": "glass_blue",
     "palette": [
       {
         "char": "+",
@@ -406,11 +406,11 @@
       },
       {
         "char": "`",
-        "block": "minecraft:stained_glass_pane@11"
+        "block": "minecraft:stained_glass@11"
       },
       {
         "char": "a",
-        "block": "minecraft:stained_glass_pane@11"
+        "block": "minecraft:stained_glass@11"
       }
     ]
   },
@@ -424,7 +424,7 @@
       },
       {
         "char": "`",
-        "block": "minecraft:stained_glass_pane@3"
+        "block": "minecraft:stained_glass@3"
       },
       {
         "char": "a",
@@ -434,7 +434,7 @@
   },
   {
     "type": "palette",
-    "name": "glass_pane_light_blue",
+    "name": "glass_light_blue",
     "palette": [
       {
         "char": "+",
@@ -442,11 +442,11 @@
       },
       {
         "char": "`",
-        "block": "minecraft:stained_glass_pane@3"
+        "block": "minecraft:stained_glass@3"
       },
       {
         "char": "a",
-        "block": "minecraft:stained_glass_pane@3"
+        "block": "minecraft:stained_glass@3"
       }
     ]
   },
@@ -547,7 +547,7 @@
       },
       {
         "char": "w",
-        "block": "minecraft:cobblestone_wall"
+        "block": "minecraft:stone_bricks"
       },
       {
         "char": ":",

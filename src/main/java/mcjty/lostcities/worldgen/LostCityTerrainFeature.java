@@ -148,10 +148,10 @@ public class LostCityTerrainFeature {
             for (Block block : Tags.Blocks.STAINED_GLASS.getValues()) {
                 addStates(block, glassStates);
             }
-            for (Block block : Tags.Blocks.GLASS_PANES.getValues()) {
+            for (Block block : Tags.Blocks.GLASS.getValues()) {
                 addStates(block, glassStates);
             }
-            for (Block block : Tags.Blocks.STAINED_GLASS_PANES.getValues()) {
+            for (Block block : Tags.Blocks.STAINED_GLASS.getValues()) {
                 addStates(block, glassStates);
             }
         }
