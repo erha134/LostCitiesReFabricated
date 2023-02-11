@@ -1,5 +1,3 @@
-
-// For those who want the bleeding edge
 buildscript {
     repositories {
         maven { url = 'https://files.minecraftforge.net/maven' }
@@ -12,7 +10,6 @@ buildscript {
         classpath 'gradle.plugin.com.matthewprenger:CurseGradle:1.4.0'
     }
 }
-
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'com.matthewprenger.cursegradle'
 apply plugin: 'maven-publish'
@@ -34,15 +31,16 @@ repositories {
     }
 }
 
+version = '1.16-4.1'
 group= "com.github.mcjty" 
 archivesBaseName = "lostcities"
 
-if (System.getenv('BUILD_NUMBER') != null) {
-    version += "-${System.getenv('BUILD_NUMBER')}"
-}
-
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(8) 
+
+println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
 
 minecraft {
     mappings channel: 'official', version: "1.16.5"
@@ -50,17 +48,13 @@ minecraft {
 
     runs {
         client = {
-            // recommended logging data for a userdev environment
             properties 'forge.logging.markers': 'REGISTRYDUMP'
-            // recommended logging level for the console
             properties 'forge.logging.console.level': 'info'
             workingDirectory project.file('run').canonicalPath
             source sourceSets.main
         }
         server = {
-            // recommended logging data for a userdev environment
             properties 'forge.logging.markers': 'SCAN,REGISTRIES,REGISTRYDUMP'
-            // recommended logging level for the console
             properties 'forge.logging.console.level': 'info'
             workingDirectory project.file('run').canonicalPath
             source sourceSets.main
@@ -91,11 +85,19 @@ jar {
 
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
-    if (findProject(':TheOneProbe') != null) {
-        implementation project(':TheOneProbe')
-    } else {
-        implementation fg.deobf(project.dependencies.create("mcjty.theoneprobe:TheOneProbe-${top_version}") {
-            transitive = false
-        })
+}
+
+jar.finalizedBy('reobfJar') 
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifact jar
+        }
+    }
+    repositories {
+        maven {
+            url "file:///${project.projectDir}/mcmodsrepo"
+        }
     }
 }
