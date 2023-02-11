@@ -10,6 +10,7 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 public class Style implements ILostCityAsset {
@@ -84,7 +85,7 @@ public class Style implements ILostCityAsset {
                     break;
                 }
             }
-            palette.merge(tomerge);
+            palette.merge(Objects.requireNonNull(tomerge));
         }
 
         return palette;

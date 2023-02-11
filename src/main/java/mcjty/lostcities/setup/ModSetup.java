@@ -15,6 +15,7 @@ import org.apache.logging.log4j.Logger;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
+import java.util.Objects;
 
 public class ModSetup {
 
@@ -49,8 +50,6 @@ public class ModSetup {
 //        MinecraftForge.TERRAIN_GEN_BUS.register(new TerrainEventHandlers());
 
         // @todo 1.14
-//        LootTableList.register(new ResourceLocation(LostCities.MODID, "chests/lostcitychest"));
-//        LootTableList.register(new ResourceLocation(LostCities.MODID, "chests/raildungeonchest"));
 
         readAssets();
 
@@ -67,9 +66,9 @@ public class ModSetup {
             writer.append("// This is an example set of conditions that you can use and modify and put\n");
             writer.append("// into (for example) config/lostcities/userassets.json\n\n");
             InputStream inputstream = LostCities.class.getResourceAsStream("/assets/lostcities/citydata/conditions.json");
-            BufferedReader br = new BufferedReader(new InputStreamReader(inputstream, StandardCharsets.UTF_8));
+            BufferedReader br = new BufferedReader(new InputStreamReader(Objects.requireNonNull(inputstream), StandardCharsets.UTF_8));
             for (String line = br.readLine(); line != null; line = br.readLine()) {
-                writer.append(line + "\n");
+                writer.append(line).append("\n");
             }
 
             br.close();

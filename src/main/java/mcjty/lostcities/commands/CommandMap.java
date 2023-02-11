@@ -34,17 +34,17 @@ public class CommandMap implements Command<CommandSource> {
             if (dimInfo != null) {
                 ChunkPos pos = new ChunkPos(position);
                 for (int z = pos.z - 40 ; z <= pos.z + 40 ; z++) {
-                    String buf = "";
+                    StringBuilder buf = new StringBuilder();
                     for (int x = pos.x - 40 ; x <= pos.x + 40 ; x++) {
                         BuildingInfo info = BuildingInfo.getBuildingInfo(pos.x + x, pos.z + z, dimInfo);
                         if (info.isCity && info.hasBuilding) {
-                            buf += "B";
+                            buf.append("B");
                         } else if (info.isCity) {
-                            buf += "+";
+                            buf.append("+");
                         } else if (info.highwayXLevel >= 0 || info.highwayZLevel >= 0) {
-                            buf += ".";
+                            buf.append(".");
                         } else {
-                            buf += " ";
+                            buf.append(" ");
                         }
                     }
                     System.out.println(buf);

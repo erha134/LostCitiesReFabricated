@@ -44,17 +44,14 @@ public enum Transform {
     public int rotateX(int x, int z) {
         switch (this) {
             case ROTATE_NONE:
+            case MIRROR_Z:
                 return x;
             case ROTATE_90:
                 return 15-z;
             case ROTATE_180:
-                return 15-x;
-            case ROTATE_270:
-                return z;
             case MIRROR_X:
                 return 15-x;
-            case MIRROR_Z:
-                return x;
+            case ROTATE_270:
             case MIRROR_90_X:
                 return z;
         }
@@ -64,19 +61,16 @@ public enum Transform {
     public int rotateZ(int x, int z) {
         switch (this) {
             case ROTATE_NONE:
+            case MIRROR_X:
                 return z;
             case ROTATE_90:
+            case MIRROR_90_X:
                 return x;
             case ROTATE_180:
+            case MIRROR_Z:
                 return 15-z;
             case ROTATE_270:
                 return 15-x;
-            case MIRROR_X:
-                return z;
-            case MIRROR_Z:
-                return 15-z;
-            case MIRROR_90_X:
-                return x;
         }
         throw new IllegalStateException("Cannot happen!");
     }
@@ -95,11 +89,9 @@ public enum Transform {
                     case ROTATE_90:
                         return RailShape.ASCENDING_SOUTH;
                     case MIRROR_90_X:
-                        return RailShape.ASCENDING_NORTH;
-                    case ROTATE_180:
-                        return RailShape.ASCENDING_WEST;
                     case ROTATE_270:
                         return RailShape.ASCENDING_NORTH;
+                    case ROTATE_180:
                     case MIRROR_X:
                         return RailShape.ASCENDING_WEST;
                 }
@@ -109,11 +101,9 @@ public enum Transform {
                     case ROTATE_90:
                         return RailShape.ASCENDING_NORTH;
                     case MIRROR_90_X:
-                        return RailShape.ASCENDING_SOUTH;
-                    case ROTATE_180:
-                        return RailShape.ASCENDING_EAST;
                     case ROTATE_270:
                         return RailShape.ASCENDING_SOUTH;
+                    case ROTATE_180:
                     case MIRROR_X:
                         return RailShape.ASCENDING_EAST;
                 }
@@ -123,14 +113,11 @@ public enum Transform {
                     case ROTATE_90:
                         return RailShape.ASCENDING_EAST;
                     case MIRROR_90_X:
-                        return RailShape.ASCENDING_WEST;
-                    case ROTATE_180:
-                        return RailShape.ASCENDING_SOUTH;
                     case ROTATE_270:
                         return RailShape.ASCENDING_WEST;
-                    case MIRROR_X:
-                        return RailShape.ASCENDING_SOUTH;
+                    case ROTATE_180:
                     case MIRROR_Z:
+                    case MIRROR_X:
                         return RailShape.ASCENDING_SOUTH;
                 }
                 break;
@@ -139,79 +126,64 @@ public enum Transform {
                     case ROTATE_90:
                         return RailShape.ASCENDING_WEST;
                     case MIRROR_90_X:
-                        return RailShape.ASCENDING_EAST;
-                    case ROTATE_180:
-                        return RailShape.ASCENDING_NORTH;
                     case ROTATE_270:
                         return RailShape.ASCENDING_EAST;
-                    case MIRROR_X:
-                        return RailShape.ASCENDING_NORTH;
+                    case ROTATE_180:
                     case MIRROR_Z:
+                    case MIRROR_X:
                         return RailShape.ASCENDING_NORTH;
                 }
                 break;
             case SOUTH_EAST:
                 switch (this) {
                     case ROTATE_90:
+                    case MIRROR_X:
                         return RailShape.SOUTH_WEST;
                     case MIRROR_90_X:
+                    case MIRROR_Z:
+                    case ROTATE_270:
                         return RailShape.NORTH_EAST;
                     case ROTATE_180:
                         return RailShape.NORTH_WEST;
-                    case ROTATE_270:
-                        return RailShape.NORTH_EAST;
-                    case MIRROR_X:
-                        return RailShape.SOUTH_WEST;
-                    case MIRROR_Z:
-                        return RailShape.NORTH_EAST;
                 }
                 break;
             case SOUTH_WEST:
                 switch (this) {
                     case ROTATE_90:
+                    case MIRROR_Z:
                         return RailShape.NORTH_WEST;
                     case MIRROR_90_X:
+                    case MIRROR_X:
+                    case ROTATE_270:
                         return RailShape.SOUTH_EAST;
                     case ROTATE_180:
                         return RailShape.NORTH_EAST;
-                    case ROTATE_270:
-                        return RailShape.SOUTH_EAST;
-                    case MIRROR_X:
-                        return RailShape.SOUTH_EAST;
-                    case MIRROR_Z:
-                        return RailShape.NORTH_WEST;
                 }
                 break;
             case NORTH_WEST:
                 switch (this) {
                     case ROTATE_90:
+                    case MIRROR_X:
                         return RailShape.NORTH_EAST;
                     case MIRROR_90_X:
+                    case MIRROR_Z:
+                    case ROTATE_270:
                         return RailShape.SOUTH_WEST;
                     case ROTATE_180:
                         return RailShape.SOUTH_EAST;
-                    case ROTATE_270:
-                        return RailShape.SOUTH_WEST;
-                    case MIRROR_X:
-                        return RailShape.NORTH_EAST;
-                    case MIRROR_Z:
-                        return RailShape.SOUTH_WEST;
                 }
                 break;
             case NORTH_EAST:
                 switch (this) {
                     case ROTATE_90:
+                    case MIRROR_Z:
                         return RailShape.SOUTH_EAST;
                     case MIRROR_90_X:
+                    case MIRROR_X:
+                    case ROTATE_270:
                         return RailShape.NORTH_WEST;
                     case ROTATE_180:
                         return RailShape.SOUTH_WEST;
-                    case ROTATE_270:
-                        return RailShape.NORTH_WEST;
-                    case MIRROR_X:
-                        return RailShape.NORTH_WEST;
-                    case MIRROR_Z:
-                        return RailShape.SOUTH_EAST;
                 }
                 break;
         }

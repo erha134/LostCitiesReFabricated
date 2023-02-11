@@ -18,10 +18,7 @@ import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.util.text.StringTextComponent;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class GuiLCConfig extends Screen {
 
@@ -40,11 +37,11 @@ public class GuiLCConfig extends Screen {
     private String mode = MODES.get(0);
 
     private long seed = 3439249320423L;
-    private Random random = new Random();
+    private final Random random = new Random();
 
-    private List<GuiElement> elements = new ArrayList<>();
+    private final List<GuiElement> elements = new ArrayList<>();
 
-    private LostCitySetup localSetup = new LostCitySetup(this::refreshPreview);
+    private final LostCitySetup localSetup = new LostCitySetup(this::refreshPreview);
 
     public GuiLCConfig(Screen parent) { // @todo 1.16}, WorldType worldType) {
         super(new StringTextComponent("Lost City Configuration"));
@@ -71,13 +68,13 @@ public class GuiLCConfig extends Screen {
 
     @Override
     public void tick() {
-        elements.stream().forEach(GuiElement::tick);
+        elements.forEach(GuiElement::tick);
     }
 
     @Override
     protected void init() {
         super.init();
-        this.minecraft.keyboardHandler.setSendRepeatsToGui(true);
+        Objects.requireNonNull(this.minecraft).keyboardHandler.setSendRepeatsToGui(true);
 
         profileButton = addButton(new ButtonExt(this, 70, 10, 100, 20, new StringTextComponent(localSetup.getProfileLabel()), p -> {
             localSetup.toggleProfile(/* @todo 1.16 worldType*/);
@@ -97,11 +94,11 @@ public class GuiLCConfig extends Screen {
         Button randomizeButton = addButton(new ButtonExt(this, this.width - 35, 35, 30, 20, new StringTextComponent("Rnd"), p -> randomizePreview())
                 .tooltip(new StringTextComponent("Randomize the seed for the preview (does not affect the generated world)")));
 
-        initCities(110);
-        initBuildings(110);
-        initDamage(70);
-        initTransport(110);
-        initVarious(110);
+        initCities();
+        initBuildings();
+        initDamage();
+        initTransport();
+        initVarious();
 
         updateValues();
     }
@@ -133,77 +130,77 @@ public class GuiLCConfig extends Screen {
         y += YOFFSET;
     }
 
-    private void initVarious(int left) {
+    private void initVarious() {
         start("Various");
-        addBool(left, "lostcity.generateSpawners").label("Spawners:"); nl();
-        addBool(left, "lostcity.generateLighting").label("Lighting:"); nl();
-        addBool(left, "lostcity.generateLoot").label("Loot:"); nl();
-        addFloat(left, "lostcity.vineChance").label("Vines:"); nl();
-        addFloat(left, "lostcity.randomLeafBlockChance").label("Leafs:"); nl();
+        addBool(110, "lostcity.generateSpawners").label("Spawners:"); nl();
+        addBool(110, "lostcity.generateLighting").label("Lighting:"); nl();
+        addBool(110, "lostcity.generateLoot").label("Loot:"); nl();
+        addFloat(110, "lostcity.vineChance").label("Vines:"); nl();
+        addFloat(110, "lostcity.randomLeafBlockChance").label("Leafs:"); nl();
         nl();
-        addBool(left, "lostcity.generateNether").label("Nether:");
+        addBool(110, "lostcity.generateNether").label("Nether:");
     }
 
-    private void initDamage(int left) {
+    private void initDamage() {
         start("Damage");
-        addBool(left, "lostcity.rubbleLayer").label("Rubble:"); nl();
+        addBool(70, "lostcity.rubbleLayer").label("Rubble:"); nl();
 
-        addFloat(left, "lostcity.ruinChance").label("Ruins:").prefix("%");
-        addFloat(left + 80, "lostcity.ruinMinlevelPercent").prefix("-");
-        addFloat(left + 140, "lostcity.ruinMaxlevelPercent").prefix("+");
-        nl();
-
-        addFloat(left, "explosions.explosionChance").label("Explosion:").prefix("%");
-        addInt(left + 80, "explosions.explosionMinRadius").prefix("-");
-        addInt(left + 140, "explosions.explosionMaxRadius").prefix("+");
-        nl();
-        addInt(left + 80, "explosions.explosionMinHeight").label("Height:");
-        addInt(left + 140, "explosions.explosionMaxHeight");
+        addFloat(70, "lostcity.ruinChance").label("Ruins:").prefix("%");
+        addFloat(70 + 80, "lostcity.ruinMinlevelPercent").prefix("-");
+        addFloat(70 + 140, "lostcity.ruinMaxlevelPercent").prefix("+");
         nl();
 
-        addFloat(left, "explosions.miniExplosionChance").label("Min/exp:").prefix("%");
-        addInt(left + 80, "explosions.miniExplosionMinRadius").prefix("-");
-        addInt(left + 140, "explosions.miniExplosionMaxRadius").prefix("+");
+        addFloat(70, "explosions.explosionChance").label("Explosion:").prefix("%");
+        addInt(70 + 80, "explosions.explosionMinRadius").prefix("-");
+        addInt(70 + 140, "explosions.explosionMaxRadius").prefix("+");
         nl();
-        addInt(left + 80, "explosions.miniExplosionMinHeight").label("Height:");
-        addInt(left + 140, "explosions.miniExplosionMaxHeight");
+        addInt(70 + 80, "explosions.explosionMinHeight").label("Height:");
+        addInt(70 + 140, "explosions.explosionMaxHeight");
+        nl();
+
+        addFloat(70, "explosions.miniExplosionChance").label("Min/exp:").prefix("%");
+        addInt(70 + 80, "explosions.miniExplosionMinRadius").prefix("-");
+        addInt(70 + 140, "explosions.miniExplosionMaxRadius").prefix("+");
+        nl();
+        addInt(70 + 80, "explosions.miniExplosionMinHeight").label("Height:");
+        addInt(70 + 140, "explosions.miniExplosionMaxHeight");
         nl();
     }
 
-    private void initBuildings(int left) {
+    private void initBuildings() {
         start("Buildings");
-        addInt(left, "lostcity.buildingMinFloors").label("Floors:");
-        addInt(left + 55, "lostcity.buildingMaxFloors");
+        addInt(110, "lostcity.buildingMinFloors").label("Floors:");
+        addInt(110 + 55, "lostcity.buildingMaxFloors");
         nl();
-        addInt(left, "lostcity.buildingMinFloorsChance").label("Floor Chance:");
-        addInt(left + 55, "lostcity.buildingMaxFloorsChance");
+        addInt(110, "lostcity.buildingMinFloorsChance").label("Floor Chance:");
+        addInt(110 + 55, "lostcity.buildingMaxFloorsChance");
         nl();
-        addInt(left, "lostcity.buildingMinCellars").label("Cellars:");
-        addInt(left + 55, "lostcity.buildingMaxCellars");
+        addInt(110, "lostcity.buildingMinCellars").label("Cellars:");
+        addInt(110 + 55, "lostcity.buildingMaxCellars");
     }
 
-    private void initTransport(int left) {
+    private void initTransport() {
         start("Transport");
-        addFloat(left, "lostcity.highwayMainPerlinScale").label("1st perlin:"); nl();
-        addFloat(left, "lostcity.highwaySecondaryPerlinScale").label("2nd perlin:"); nl();
-        addFloat(left, "lostcity.highwayPerlinFactor").label("Perlin:"); nl();
-        addInt(left, "lostcity.highwayDistanceMask").label("Distance mask:"); nl();
-        addBool(left, "lostcity.railwaysEnabled").label("Railways:"); nl();
+        addFloat(110, "lostcity.highwayMainPerlinScale").label("1st perlin:"); nl();
+        addFloat(110, "lostcity.highwaySecondaryPerlinScale").label("2nd perlin:"); nl();
+        addFloat(110, "lostcity.highwayPerlinFactor").label("Perlin:"); nl();
+        addInt(110, "lostcity.highwayDistanceMask").label("Distance mask:"); nl();
+        addBool(110, "lostcity.railwaysEnabled").label("Railways:"); nl();
     }
 
-    private void initCities(int left) {
+    private void initCities() {
         start("Cities");
-        addFloat(left,"cities.cityChance").label("Rarity:"); nl();
-        addFloat(left,"cities.cityThreshold").label("Threshold:"); nl();
+        addFloat(110,"cities.cityChance").label("Rarity:"); nl();
+        addFloat(110,"cities.cityThreshold").label("Threshold:"); nl();
 
-        addInt(left,"cities.cityMinRadius").label("Radius:");
-        addInt(left + 55, "cities.cityMaxRadius");
+        addInt(110,"cities.cityMinRadius").label("Radius:");
+        addInt(110 + 55, "cities.cityMaxRadius");
         nl();
 
-        addFloat(left,"lostcity.buildingChance").label("Buildings:"); nl();
-        addFloat(left,"lostcity.building2x2Chance").label("Buildings 2x2:"); nl();
-        addFloat(left,"lostcity.parkChance").label("Parks:"); nl();
-        addFloat(left,"lostcity.fountainChance").label("Fountains:"); nl();
+        addFloat(110,"lostcity.buildingChance").label("Buildings:"); nl();
+        addFloat(110,"lostcity.building2x2Chance").label("Buildings 2x2:"); nl();
+        addFloat(110,"lostcity.parkChance").label("Parks:"); nl();
+        addFloat(110,"lostcity.fountainChance").label("Fountains:"); nl();
     }
 
     private void toggleMode() {
@@ -216,15 +213,13 @@ public class GuiLCConfig extends Screen {
         modeButton.setMessage(new StringTextComponent(mode));
     }
 
-    private GuiElement add(GuiElement el) {
+    private void add(GuiElement el) {
         elements.add(el);
-        return el;
     }
 
-    public <T extends Widget> T addWidget(T widget) {
+    public <T extends Widget> void addWidget(T widget) {
         this.buttons.add(widget);
         this.children.add(widget);
-        return widget;
     }
 
     private void randomizePreview() {
@@ -240,7 +235,7 @@ public class GuiLCConfig extends Screen {
 
     private void renderExtra(MatrixStack stack) {
         drawString(stack, font, "Profile:", 10, 16, 0xffffffff);
-        elements.stream().forEach(el -> el.render(stack));
+        elements.forEach(el -> el.render(stack));
 
         localSetup.get().ifPresent(profile -> {
             if ("Cities".equals(mode)) {
@@ -389,12 +384,14 @@ public class GuiLCConfig extends Screen {
                 char b = diminfo.getBiomeChar(x, z);
                 switch (b) {
                     case 'p': color = 0x005500; break;
-                    case '-': color = 0x000066; break;
-                    case '=': color = 0x000066; break;
+                    case '-':
+                    case '=':
+                        color = 0x000066; break;
                     case '#': color = 0x447744; break;
                     case '+': color = 0x335533; break;
-                    case '*': color = 0xcccc55; break;
-                    case 'd': color = 0xcccc55; break;
+                    case '*':
+                    case 'd':
+                        color = 0xcccc55; break;
                 }
                 fill(stack, sx, sz, sx + 3, sz + 3, 0xff000000 + soften(color, soft));
                 LostChunkCharacteristics characteristics = BuildingInfo.getChunkCharacteristics(x, z, diminfo);
@@ -410,7 +407,7 @@ public class GuiLCConfig extends Screen {
     }
 
     private void updateValues() {
-        elements.stream().forEach(GuiElement::update);
+        elements.forEach(GuiElement::update);
         refreshPreview();
     }
 
@@ -420,7 +417,7 @@ public class GuiLCConfig extends Screen {
 
         boolean isCustomized = "customized".equals(localSetup.getProfileLabel());
         modeButton.active = localSetup.isCustomizable() || isCustomized;
-        elements.stream().forEach(s -> {
+        elements.forEach(s -> {
             s.setEnabled(isCustomized);
             s.setBasedOnMode(mode);
         });
@@ -455,7 +452,7 @@ public class GuiLCConfig extends Screen {
         for(Widget widget : this.buttons) {
             if (widget.isMouseOver(mouseX, mouseY) && widget.visible) {
 //            if (widget.isHovered() && widget.visible) {
-                widget.renderToolTip(stack, mouseX - 0, mouseY - 0);
+                widget.renderToolTip(stack, mouseX, mouseY);
                 break;
             }
         }

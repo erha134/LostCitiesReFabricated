@@ -36,9 +36,8 @@ public class ChunkDriver {
         return this;
     }
 
-    public ChunkDriver current(BlockPos i) {
+    public void current(BlockPos i) {
         current.set(i);
-        return this;
     }
 
     public BlockPos getCurrentCopy() {
@@ -218,15 +217,6 @@ public class ChunkDriver {
         primer.setBlockState(current, c, false);
         return this;
     }
-
-//    private void validate() {
-//        if (current.getX() < 0 || current.getY() < 0 || current.getZ() < 0) {
-//            throw new RuntimeException("current: " + current.getX() + "," + current.getY() + "," + current.getZ());
-//        }
-//        if (current.getX() > 15 || current.getY() > 255 || current.getZ() > 15) {
-//            throw new RuntimeException("current: " + current.getX() + "," + current.getY() + "," + current.getZ());
-//        }
-//    }
 
     public ChunkDriver block(BlockState c) {
 //        validate();

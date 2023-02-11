@@ -4,6 +4,7 @@ import mcjty.lostcities.LostCities;
 import mcjty.lostcities.api.RailChunkType;
 import mcjty.lostcities.config.LostCityConfiguration;
 import mcjty.lostcities.config.LostCityProfile;
+import mcjty.lostcities.setup.ModSetup;
 import mcjty.lostcities.varia.ChunkCoord;
 import mcjty.lostcities.varia.GeometryTools;
 import mcjty.lostcities.varia.NoiseGeneratorPerlin;
@@ -27,7 +28,6 @@ import net.minecraft.util.registry.Registry;
 import net.minecraft.world.ISeedReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.chunk.AbstractChunkProvider;
 import net.minecraft.world.chunk.IChunk;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.NoiseChunkGenerator;
@@ -77,13 +77,13 @@ public class LostCityTerrainFeature {
     private BlockState street2;
     private int streetBorder;
 
-    private NoiseGeneratorPerlin rubbleNoise;
-    private NoiseGeneratorPerlin leavesNoise;
-    private NoiseGeneratorPerlin ruinNoise;
+    private final NoiseGeneratorPerlin rubbleNoise;
+    private final NoiseGeneratorPerlin leavesNoise;
+    private final NoiseGeneratorPerlin ruinNoise;
 
-    private static BlockState randomLeafs[] = null;
+    private static BlockState[] randomLeafs = null;
 
-    private ChunkDriver driver;
+    private final ChunkDriver driver;
 
     private final IDimensionInfo provider;
     private final LostCityProfile profile;
@@ -95,7 +95,7 @@ public class LostCityTerrainFeature {
     private final Integer[] mm01 = new Integer[2];
     private final Integer[] mm11 = new Integer[2];
 
-    private Map<ChunkCoord, ChunkHeightmap> cachedHeightmaps = new HashMap<>();
+    private final Map<ChunkCoord, ChunkHeightmap> cachedHeightmaps = new HashMap<>();
 
     public LostCityTerrainFeature(IDimensionInfo provider, LostCityProfile profile, Random rand) {
         this.provider = provider;
@@ -108,9 +108,6 @@ public class LostCityTerrainFeature {
         this.leavesNoise = new NoiseGeneratorPerlin(rand, 4);
         this.ruinNoise = new NoiseGeneratorPerlin(rand, 4);
 
-//        islandTerrainGenerator.setup(provider.getWorld().getWorld(), provider);
-//        cavernTerrainGenerator.setup(provider.getWorld().getWorld(), provider);
-//        spaceTerrainGenerator.setup(provider.getWorld().getWorld(), provider);
     }
 
     public static BlockState getRandomLeaf() {
@@ -207,9 +204,7 @@ public class LostCityTerrainFeature {
     }
 
     private static void addStates(Block block, Set<BlockState> set) {
-        for (BlockState state : block.getStateDefinition().getPossibleStates()) {
-            set.add(state);
-        }
+        set.addAll(block.getStateDefinition().getPossibleStates());
     }
 
     public void setupStates(LostCityProfile profile) {
@@ -384,7 +379,7 @@ public class LostCityTerrainFeature {
         if (horiz && vert) {
             if (!CitySphere.intersectsWithCitySphere(info.chunkX, info.chunkZ, provider)) {
                 BuildingPart part = AssetRegistries.PARTS.get("monorails_both");
-                generatePart(info, part, Transform.ROTATE_NONE, 0, mainGroundLevel + info.profile.CITYSPHERE_MONORAIL_HEIGHT_OFFSET, 0, true);
+                generatePart(info, part, Transform.ROTATE_NONE, mainGroundLevel + info.profile.CITYSPHERE_MONORAIL_HEIGHT_OFFSET, true);
             }
             return;
         } else if (horiz) {
@@ -425,7 +420,7 @@ public class LostCityTerrainFeature {
             part = AssetRegistries.PARTS.get("monorails_vertical");
         }
 
-        generatePart(info, part, transform, 0, mainGroundLevel + info.profile.CITYSPHERE_MONORAIL_HEIGHT_OFFSET, 0, true);
+        generatePart(info, part, transform, mainGroundLevel + info.profile.CITYSPHERE_MONORAIL_HEIGHT_OFFSET, true);
     }
 
     private boolean hasNonStationMonoRail(BuildingInfo info) {
@@ -467,8 +462,6 @@ public class LostCityTerrainFeature {
         }
 
         // @todo 1.14
-//        LostCityEvent.PostGenOutsideChunkEvent postevent = new LostCityEvent.PostGenOutsideChunkEvent(provider.worldObj, provider, chunkX, chunkZ, driver.getPrimer());
-//        MinecraftForge.EVENT_BUS.post(postevent);
 
         generateBridges(info);
         generateHighways(chunkX, chunkZ, info);
@@ -537,25 +530,6 @@ public class LostCityTerrainFeature {
 
                     }
 
-//                    for (int x = 0; x < 16; x++) {
-//                        for (int z = 0; z < 16; z++) {
-//                            int index = (x << 12) | (z << 8) + yy * 16;
-//                            for (int y = 0; y < 16; y++) {
-//                                char d = primer.data[index];
-//                                if (d != airChar || (index & 0xff) < waterLevel) {
-//                                    int cury = yy * 16 + y;
-//                                    float damage = damageArea.getDamage(cx + x, cury, cz + z);
-//                                    if (damage >= 0.001) {
-//                                        Character newd = damageArea.damageBlock(d, provider, cury, damage, info.getCompiledPalette());
-//                                        if (newd != d) {
-//                                            primer.data[index] = newd;
-//                                        }
-//                                    }
-//                                }
-//                                index++;
-//                            }
-//                        }
-//                    }
                 }
             }
         }
@@ -597,11 +571,11 @@ public class LostCityTerrainFeature {
         if (info.isTunnel(level)) {
             // We know we need a tunnel
             part = AssetRegistries.PARTS.get("highway_tunnel" + suffix);
-            generatePart(info, part, transform, 0, highwayGroundLevel, 0, true);
+            generatePart(info, part, transform, highwayGroundLevel, true);
         } else if (info.isCity && level <= adjacent1.cityLevel && level <= adjacent2.cityLevel && adjacent1.isCity && adjacent2.isCity) {
             // Simple highway in the city
             part = AssetRegistries.PARTS.get("highway_open" + suffix);
-            int height = generatePart(info, part, transform, 0, highwayGroundLevel, 0, true);
+            int height = generatePart(info, part, transform, highwayGroundLevel, true);
             // Clear a bit more above the highway
             if (!info.profile.isCavern()) {
                 int clearheight = 15;
@@ -614,7 +588,7 @@ public class LostCityTerrainFeature {
             }
         } else {
             part = AssetRegistries.PARTS.get("highway_bridge" + suffix);
-            int height = generatePart(info, part, transform, 0, highwayGroundLevel, 0, true);
+            int height = generatePart(info, part, transform, highwayGroundLevel, true);
             // Clear a bit more above the highway
             if (!info.profile.isCavern()) {
                 int clearheight = 15;
@@ -907,10 +881,7 @@ public class LostCityTerrainFeature {
         if (material == Material.WATER) {
             return true;
         }
-        if (material == Material.LAVA) {
-            return true;
-        }
-        return false;
+        return material == Material.LAVA;
     }
 
     private void moveUp(BuildingInfo info, int x, int z, int height, boolean dowater) {
@@ -933,7 +904,7 @@ public class LostCityTerrainFeature {
                 break;
             }
             driver.block(blockToMove);
-            driver.decY();;
+            driver.decY();
             idx--;
         }
     }
@@ -967,14 +938,6 @@ public class LostCityTerrainFeature {
             driver.decY();
         }
 
-//
-//        if (dowater) {
-//            // Special case for drowned city
-//            driver.setBlockRangeSafe(x, height1, z, info.waterLevel, liquid);
-//            driver.setBlockRangeSafe(x, info.waterLevel+1, z, height2, air);
-//        } else {
-//            driver.setBlockRange(x, height1, z, height2, air);
-//        }
         return true;
     }
 
@@ -1092,9 +1055,9 @@ public class LostCityTerrainFeature {
             ChunkHeightmap heightmap = new ChunkHeightmap(profile.LANDSCAPE_TYPE, profile.GROUNDLEVEL, base);
 
             boolean doNoiseVariant = false;
-            AbstractChunkProvider chunkProvider = world.getLevel().getChunkSource();
+            ServerChunkProvider chunkProvider = world.getLevel().getChunkSource();
             if (chunkProvider instanceof ServerChunkProvider) {
-                ChunkGenerator generator = ((ServerChunkProvider) chunkProvider).getGenerator();
+                ChunkGenerator generator = chunkProvider.getGenerator();
                 if (generator instanceof NoiseChunkGenerator) {
                     doNoiseVariant = true;
                 }
@@ -1124,9 +1087,9 @@ public class LostCityTerrainFeature {
 
     private void makeDummyChunkNoise(int chunkX, int chunkZ, ISeedReader region, ChunkHeightmap heightmap) {
         DummyChunk primer = new DummyChunk(new ChunkPos(chunkX, chunkZ), heightmap);
-        AbstractChunkProvider chunkProvider = region.getLevel().getChunkSource();
+        ServerChunkProvider chunkProvider = region.getLevel().getChunkSource();
         if (chunkProvider instanceof ServerChunkProvider) {
-            ChunkGenerator generator = ((ServerChunkProvider) chunkProvider).getGenerator();
+            ChunkGenerator generator = chunkProvider.getGenerator();
 
             generator.createBiomes(region.registryAccess().registryOrThrow(Registry.BIOME_REGISTRY), primer);
             updateHeightmap((NoiseChunkGenerator) generator, primer, heightmap);
@@ -1244,8 +1207,6 @@ public class LostCityTerrainFeature {
                 generateStreet(info, heightmap, rand);
             }
 //        }
-//        LostCityEvent.PostGenCityChunkEvent postevent = new LostCityEvent.PostGenCityChunkEvent(provider.worldObj, provider, chunkX, chunkZ, driver.getPrimer());
-//        MinecraftForge.EVENT_BUS.post(postevent);
 
         if (info.profile.RUIN_CHANCE > 0.0) {
             generateRuins(info);
@@ -1277,7 +1238,7 @@ public class LostCityTerrainFeature {
         if (info.getZmin().getRailInfo().getType() == RailChunkType.HORIZONTAL ||
                 info.getZmax().getRailInfo().getType() == RailChunkType.HORIZONTAL) {
             int height = info.groundLevel + Railway.RAILWAY_LEVEL_OFFSET * 6;
-            generatePart(info, info.railDungeon, Transform.ROTATE_NONE, 0, height, 0, false);
+            generatePart(info, info.railDungeon, Transform.ROTATE_NONE, height, false);
         }
     }
 
@@ -1379,7 +1340,7 @@ public class LostCityTerrainFeature {
                 part = AssetRegistries.PARTS.get("rails_flat");
                 break;
         }
-        int h = generatePart(info, part, transform, 0, height, 0, false);
+        int h = generatePart(info, part, transform, height, false);
         if (clearUpper) {
             ChunkHeightmap heightmap = getHeightmap(info.chunkX, info.chunkZ, provider.getWorld());
             int maxh = heightmap.getMaximumHeight() + 4;
@@ -1434,6 +1395,9 @@ public class LostCityTerrainFeature {
             int index;
             switch (railInfo.getType()) {
                 case NONE:
+                case DOUBLE_BEND:
+                case VERTICAL:
+                case THREE_SPLIT:
                     break;
                 case STATION_SURFACE:
                 case STATION_UNDERGROUND:
@@ -1484,12 +1448,6 @@ public class LostCityTerrainFeature {
                         }
                     }
                     break;
-                case THREE_SPLIT:
-                    break;
-                case VERTICAL:
-                    break;
-                case DOUBLE_BEND:
-                    break;
             }
         }
 
@@ -1497,11 +1455,11 @@ public class LostCityTerrainFeature {
             part = AssetRegistries.PARTS.get("station_staircase");
             for (int i = railInfo.getLevel() + 1; i < info.cityLevel; i++) {
                 height = info.groundLevel + i * 6;
-                generatePart(info, part, transform, 0, height, 0, false);
+                generatePart(info, part, transform, height, false);
             }
             height = info.groundLevel + info.cityLevel * 6;
             part = AssetRegistries.PARTS.get("station_staircase_surface");
-            generatePart(info, part, transform, 0, height, 0, false);
+            generatePart(info, part, transform, height, false);
         }
     }
 
@@ -1528,7 +1486,7 @@ public class LostCityTerrainFeature {
                     throw new RuntimeException("Cannot happen!");
             }
 
-            generatePart(info, stairs, transform, 0, oy, 0, false);
+            generatePart(info, stairs, transform, oy, false);
         }
     }
 
@@ -1572,18 +1530,7 @@ public class LostCityTerrainFeature {
             return highestY;
         }
 
-//        public Set<IIndex> cut(int y) {
-//            Set<IIndex> toRemove = new HashSet<>();
-//            for (IIndex block : connectedBlocks) {
-//                if ((block.getY()) >= y) {
-//                    toRemove.add(block);
-//                }
-//            }
-//            connectedBlocks.removeAll(toRemove);
-//            return toRemove;
-//        }
-//
-        public int needsSplitting() {
+public int needsSplitting() {
             float averageBlocksPerLevel = (float) connectedBlocks.size() / (highestY - lowestY + 1);
             int connectionThreshold = (int) (averageBlocksPerLevel / 10);
             if (connectionThreshold <= 0) {
@@ -1738,19 +1685,6 @@ public class LostCityTerrainFeature {
                 }
             }
         }
-
-//        // Split large blobs that have very thin connections in Y direction
-//        for (Blob blob : blobs) {
-//            if (blob.getAvgdamage() > .3f && blob.getCntMindamage() < 10) { // @todo configurable?
-//                int y = blob.needsSplitting();
-//                if (y != -1) {
-//                    Set<Integer> toRemove = blob.cut(y);
-//                    for (Integer index : toRemove) {
-//                        primer.data[index] = ((index & 0xff) < waterLevel) ? liquidChar : airChar;
-//                    }
-//                }
-//            }
-//        }
 
         Blob blocksToMove = new Blob(0);
 
@@ -1968,7 +1902,7 @@ public class LostCityTerrainFeature {
                 } else {
                     part = info.fountainType;
                 }
-                generatePart(info, part, Transform.ROTATE_NONE, 0, height, 0, false);
+                generatePart(info, part, Transform.ROTATE_NONE, height, false);
             }
 
             generateRandomVegetation(info, rand, height);
@@ -2144,11 +2078,10 @@ public class LostCityTerrainFeature {
         }
     }
 
-    private int generateFrontPart(BuildingInfo info, int height, BuildingInfo adj, Transform rot) {
+    private void generateFrontPart(BuildingInfo info, int height, BuildingInfo adj, Transform rot) {
         if (info.hasFrontPartFrom(adj)) {
-            return generatePart(adj, adj.frontType, rot, 0, height, 0, false);
+            generatePart(adj, adj.frontType, rot, height, false);
         }
-        return height;
     }
 
     private void generateCorridors(BuildingInfo info, boolean xRail, boolean zRail) {
@@ -2390,7 +2323,7 @@ public class LostCityTerrainFeature {
      */
     private int generatePart(BuildingInfo info, IBuildingPart part,
                              Transform transform,
-                             int ox, int oy, int oz, boolean airWaterLevel) {
+                             int oy, boolean airWaterLevel) {
         CompiledPalette compiledPalette = info.getCompiledPalette();
         // Cache the combined palette?
         Palette localPalette = part.getLocalPalette();
@@ -2404,8 +2337,8 @@ public class LostCityTerrainFeature {
             for (int z = 0; z < part.getZSize(); z++) {
                 char[] vs = part.getVSlice(x, z);
                 if (vs != null) {
-                    int rx = ox + transform.rotateX(x, z);
-                    int rz = oz + transform.rotateZ(x, z);
+                    int rx = 0 + transform.rotateX(x, z);
+                    int rz = 0 + transform.rotateZ(x, z);
                     driver.current(rx, oy, rz);
                     int len = vs.length;
                     for (int y = 0; y < len; y++) {
@@ -2532,15 +2465,15 @@ public class LostCityTerrainFeature {
                 throw new RuntimeException("Condition '" + cnd.getName() + "' did not return a valid mob!");
             }
             AbstractSpawner logic = spawner.getSpawner();
-            logic.setEntityId(ForgeRegistries.ENTITIES.getValue(new ResourceLocation(randomValue)));
+            logic.setEntityId(Objects.requireNonNull(Objects.requireNonNull(ForgeRegistries.ENTITIES.getValue(new ResourceLocation(randomValue)))));
             spawner.setChanged();
             if (LostCityConfiguration.DEBUG) {
-                LostCities.setup.getLogger().debug("generateLootSpawners: mob=" + randomValue + " pos=" + pos.toString());
+                ModSetup.getLogger().debug("generateLootSpawners: mob=" + randomValue + " pos=" + pos.toString());
             }
         } else if (tileentity != null) {
-            LostCities.setup.getLogger().error("The mob spawner at (" + pos.getX() + ", " + pos.getY() + ", " + pos.getZ() + ") has a TileEntity of incorrect type " + tileentity.getClass().getName() + "!");
+            ModSetup.getLogger().error("The mob spawner at (" + pos.getX() + ", " + pos.getY() + ", " + pos.getZ() + ") has a TileEntity of incorrect type " + tileentity.getClass().getName() + "!");
         } else {
-            LostCities.setup.getLogger().error("The mob spawner at (" + pos.getX() + ", " + pos.getY() + ", " + pos.getZ() + ") is missing its TileEntity!");
+            ModSetup.getLogger().error("The mob spawner at (" + pos.getX() + ", " + pos.getY() + ", " + pos.getZ() + ") is missing its TileEntity!");
         }
     }
 
@@ -2552,7 +2485,7 @@ public class LostCityTerrainFeature {
                 createLoot(info, rand, world, pos, condition, this.provider);
             }
         } else if (te == null) {
-            LostCities.setup.getLogger().error("Error setting loot at " + pos.getX() + "," + pos.getY() + "," + pos.getZ());
+            ModSetup.getLogger().error("Error setting loot at " + pos.getX() + "," + pos.getY() + "," + pos.getZ());
         }
     }
 
@@ -2582,11 +2515,6 @@ public class LostCityTerrainFeature {
                 if (randomValue == null) {
                     throw new RuntimeException("Condition '" + lootTable + "' did not return a table under certain conditions!");
                 }
-//                ((LockableLootTileEntity) tileentity).setLootTable(new ResourceLocation(randomValue), random.nextLong());
-//                tileentity.markDirty();
-//                if (LostCityConfiguration.DEBUG) {
-//                    LostCities.setup.getLogger().debug("createLootChest: loot=" + randomValue + " pos=" + pos.toString());
-//                }
                 LockableLootTileEntity.setLootTable(world, random, pos, new ResourceLocation(randomValue));
             }
         }
@@ -2627,13 +2555,10 @@ public class LostCityTerrainFeature {
                         }
                         // Fix for FLOATING // @todo!
                         BlockState b;
-                        switch (rand.nextInt(5)) {
-                            case 0:
-                                b = ironbars;
-                                break;
-                            default:
-                                b = filler;     // Filler from adjacent building
-                                break;
+                        if (rand.nextInt(5) == 0) {
+                            b = ironbars;
+                        } else {
+                            b = filler;     // Filler from adjacent building
                         }
                         driver.current(x, h+1, z).block(b);
                     }
@@ -2655,9 +2580,7 @@ public class LostCityTerrainFeature {
                 ChunkHeightmap adjacentHeightmap = getHeightmap(adjacent.chunkX, adjacent.chunkZ, provider.getWorld());
                 int adjacentHeight = adjacentHeightmap.getAverageHeight();
                 if (adjacentHeight > 5) {
-                    if ((adjacentHeight-4) < info.getCityGroundLevel()) {
-                        return true;
-                    }
+                    return (adjacentHeight - 4) < info.getCityGroundLevel();
                 }
             }
         }
@@ -2761,10 +2684,10 @@ public class LostCityTerrainFeature {
             }
 
             BuildingPart part = info.getFloor(f);
-            generatePart(info, part, Transform.ROTATE_NONE, 0, height, 0, false);
+            generatePart(info, part, Transform.ROTATE_NONE, height, false);
             part = info.getFloorPart2(f);
             if (part != null) {
-                generatePart(info, part, Transform.ROTATE_NONE, 0, height, 0, false);
+                generatePart(info, part, Transform.ROTATE_NONE, height, false);
             }
 
             // Check for doors

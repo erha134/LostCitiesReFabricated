@@ -109,9 +109,7 @@ public abstract class ConditionContext {
                 int l1 = Integer.parseInt(split[0]);
                 int l2 = Integer.parseInt(split[1]);
                 test = combine(test, levelInfo -> levelInfo.isRange(l1, l2));
-            } catch (NumberFormatException e) {
-                throw new RuntimeException("Bad range specification: <l1>,<l2>!");
-            } catch (ArrayIndexOutOfBoundsException e) {
+            } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
                 throw new RuntimeException("Bad range specification: <l1>,<l2>!");
             }
         }

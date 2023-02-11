@@ -30,9 +30,6 @@ public class PacketRequestProfile {
     public void handle(Supplier<NetworkEvent.Context> ctx) {
         ctx.get().enqueueWork(() -> {
             // @todo 1.14
-//            ServerPlayerEntity player = ctx.get().getSender();
-//            LostCityProfile profile = WorldTypeTools.getProfile(WorldTools.getWorld(dimension));
-//            PacketHandler.INSTANCE.sendTo(new PacketReturnProfileToClient(dimension, profile.getName()), player.connection.netManager, NetworkDirection.PLAY_TO_CLIENT);
         });
         ctx.get().setPacketHandled(true);
     }

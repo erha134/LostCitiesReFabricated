@@ -7,7 +7,7 @@ import net.minecraft.block.BlockState;
  * A heightmap for a chunk
  */
 public class ChunkHeightmap {
-    private final byte heightmap[] = new byte[16*16];
+    private final byte[] heightmap = new byte[16*16];
     private final LandscapeType type;
     private final int groundLevel;
     private final BlockState baseState;

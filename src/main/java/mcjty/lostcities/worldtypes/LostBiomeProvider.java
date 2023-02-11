@@ -10,7 +10,4 @@ public class LostBiomeProvider extends OverworldBiomeProvider {
         super(p_i241958_1_, p_i241958_3_, p_i241958_4_, p_i241958_5_);
     }
 
-    //    public LostBiomeProvider(OverworldBiomeProviderSettings settingsProvider) {
-//        super(settingsProvider);
-//    }
 }

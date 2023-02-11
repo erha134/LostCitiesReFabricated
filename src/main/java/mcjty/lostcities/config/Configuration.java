@@ -147,7 +147,7 @@ public class Configuration {
                     for (JsonElement element : valueEl.getAsJsonArray()) {
                         list.add(element.getAsString());
                     }
-                    getStringList(elementEntry.getKey(), category, list.toArray(new String[list.size()]), "");
+                    getStringList(elementEntry.getKey(), category, list.toArray(new String[0]), "");
                 }
             }
         }

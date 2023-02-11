@@ -202,18 +202,12 @@ public class City {
         for (int cx = -4 ; cx <= 4 ; cx++) {
             for (int cz = -4 ; cz <= 4 ; cz++) {
                 // @todo 1.14
-//                if (provider.hasMansion(chunkX+cx, chunkZ+cz)) {
-//                    return 0.0f;
-//                }
             }
         }
 
         for (int cx = -2 ; cx <= 2 ; cx++) {
             for (int cz = -2 ; cz <= 2 ; cz++) {
                 // @todo 1.14
-//                if (provider.hasOceanMonument(chunkX+cx, chunkZ+cz)) {
-//                    return 0.0f;
-//                }
             }
         }
 
@@ -235,14 +229,6 @@ public class City {
         }
 
         // @todo 1.14: do we need this?
-//        for (int cx = -1 ; cx <= 1 ; cx++) {
-//            for (int cz = -1 ; cz <= 1 ; cz++) {
-//                Biome[] biomes = BiomeInfo.getBiomeInfo(provider, new ChunkCoord(type, chunkX + cx, chunkZ + cz)).getBiomes();
-//                if (isTooHighForBuilding(biomes)) {
-//                    return 0;
-//                }
-//            }
-//        }
 
         float foundFactor = profile.CITY_DEFAULT_BIOME_FACTOR;
         Biome biome = BiomeInfo.getBiomeInfo(provider, new ChunkCoord(type, chunkX, chunkZ)).getMainBiome();
@@ -252,7 +238,7 @@ public class City {
         try {
             f = map.get(object);
         } catch(NullPointerException e) {
-            throw new RuntimeException("Biome '" + object.toString() + "' (" + object.getPath() + ") could not be found in the biome registry! This is likely a bug in the mod providing that biome!", e);
+            throw new RuntimeException("Biome '" + Objects.requireNonNull(object).toString() + "' (" + object.getPath() + ") could not be found in the biome registry! This is likely a bug in the mod providing that biome!", e);
         }
         if (f != null) {
             foundFactor = f;
@@ -263,8 +249,6 @@ public class City {
 
     public static boolean isTooHighForBuilding(Biome[] biomes) {
         // @todo 1.14
-//        return biomes[55].getBaseHeight() > 4 || biomes[54].getBaseHeight() > 4 || biomes[56].getBaseHeight() > 4
-//                || biomes[5].getBaseHeight() > 4 || biomes[95].getBaseHeight() > 4;
         return false;
     }
 

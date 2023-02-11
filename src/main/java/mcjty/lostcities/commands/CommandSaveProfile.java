@@ -33,7 +33,7 @@ public class CommandSaveProfile implements Command<CommandSource> {
 
 
     @Override
-    public int run(CommandContext<CommandSource> context) throws CommandSyntaxException {
+    public int run(CommandContext<CommandSource> context) {
         String name = context.getArgument("profile", String.class);
         LostCityProfile profile = LostCityConfiguration.standardProfiles.get(name);
         if (profile == null) {
@@ -43,7 +43,7 @@ public class CommandSaveProfile implements Command<CommandSource> {
         JsonObject jsonObject = profile.toJson(false);
         Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
         try {
-            try (PrintWriter writer = new PrintWriter(new File(name + ".json"))) {
+            try (PrintWriter writer = new PrintWriter(name + ".json")) {
                 writer.print(gson.toJson(jsonObject));
                 writer.flush();
             }

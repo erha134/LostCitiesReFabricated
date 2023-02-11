@@ -5,6 +5,7 @@ import mcjty.lostcities.gui.GuiLCConfig;
 import mcjty.lostcities.gui.LostCitySetup;
 import mcjty.lostcities.worldgen.LostCityFeature;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.client.gui.screen.CreateWorldScreen;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.util.ResourceLocation;
@@ -15,34 +16,6 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 public class ClientEventHandlers {
 
-    //
-//    @SubscribeEvent
-//    public void onFogEvent(EntityViewRenderEvent.FogColors event) {
-//        if (WorldTypeTools.isLostCities(Minecraft.getInstance().world)) {
-//            LostCityProfile profile = WorldTypeTools.getProfile(Minecraft.getInstance().world);
-//            if (profile.FOG_RED >= 0) {
-//                event.setRed(profile.FOG_RED);
-//            }
-//            if (profile.FOG_GREEN >= 0) {
-//                event.setGreen(profile.FOG_GREEN);
-//            }
-//            if (profile.FOG_BLUE >= 0) {
-//                event.setBlue(profile.FOG_BLUE);
-//            }
-//        }
-//    }
-//
-//    @SubscribeEvent
-//    public void onFogDensity(EntityViewRenderEvent.FogDensity event) {
-//        if (WorldTypeTools.isLostCities(Minecraft.getInstance().world)) {
-//            LostCityProfile profile = WorldTypeTools.getProfile(Minecraft.getInstance().world);
-//            if (profile.FOG_DENSITY >= 0) {
-//                event.setDensity(profile.FOG_DENSITY);
-//                event.setCanceled(true);
-//            }
-//        }
-//    }
-
     private Button lostCitiesButton = null;
 
     @SubscribeEvent
@@ -52,7 +25,7 @@ public class ClientEventHandlers {
             lostCitiesButton.visible = screen.displayOptions;
             if (lostCitiesButton.visible) {
                 Minecraft.getInstance().getTextureManager().bind(new ResourceLocation(LostCities.MODID, "textures/gui/configicon.png"));
-                screen.blit(event.getMatrixStack(), screen.width - 100, 30, 70, 70, 256, 256, 256, 256, 256, 256);
+                AbstractGui.blit(event.getMatrixStack(), screen.width - 100, 30, 70, 70, 256, 256, 256, 256, 256, 256);
             }
         }
     }

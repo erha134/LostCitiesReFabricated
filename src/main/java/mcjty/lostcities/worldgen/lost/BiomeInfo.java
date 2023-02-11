@@ -10,7 +10,7 @@ import java.util.Map;
 
 public class BiomeInfo {
 
-    private static Map<ChunkCoord, BiomeInfo> biomeInfoMap = new HashMap<>();
+    private static final Map<ChunkCoord, BiomeInfo> biomeInfoMap = new HashMap<>();
 
     private Biome mainBiome;
 
