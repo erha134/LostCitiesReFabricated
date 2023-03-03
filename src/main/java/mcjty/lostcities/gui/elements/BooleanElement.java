@@ -28,7 +28,7 @@ public class BooleanElement extends GuiElement {
             }
             gui.getLocalSetup().get().ifPresent(profile -> {
                 Configuration configuration = profile.toConfiguration();
-                configuration.set(attribute, "On".equals(button.getMessage()));
+                configuration.set(attribute, "On".equals(button.getMessage().getString()));
                 profile.copyFromConfiguration(configuration);
                 gui.refreshPreview();
             });

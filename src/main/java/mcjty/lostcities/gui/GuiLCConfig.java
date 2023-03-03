@@ -383,7 +383,8 @@ public class GuiLCConfig extends Screen {
                 int color = 0x005500;
                 char b = diminfo.getBiomeChar(x, z);
                 switch (b) {
-                    case 'p': color = 0x005500; break;
+                    case 'p':
+                        break;
                     case '-':
                     case '=':
                         color = 0x000066; break;
@@ -451,7 +452,6 @@ public class GuiLCConfig extends Screen {
         super.render(stack, mouseX, mouseY, partialTicks);
         for(Widget widget : this.buttons) {
             if (widget.isMouseOver(mouseX, mouseY) && widget.visible) {
-//            if (widget.isHovered() && widget.visible) {
                 widget.renderToolTip(stack, mouseX, mouseY);
                 break;
             }

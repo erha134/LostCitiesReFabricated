@@ -145,7 +145,7 @@ public class NullDimensionInfo implements IDimensionInfo {
             case 'd':
             case '*':
             case '=':
-                y = 65; break;
+                break;
             case '-': y = 60; break;
             case '#': y = 95; break;
             case '+': y = 125; break;
@@ -172,7 +172,8 @@ public class NullDimensionInfo implements IDimensionInfo {
         ChunkPos cp = new ChunkPos(pos);
         char b = getBiomeChar(cp.x, cp.z);
         switch (b) {
-            case 'p': biome = Biomes.PLAINS; break;
+            case 'p':
+                break;
             case '-': biome = Biomes.OCEAN; break;
             case '=': biome = Biomes.RIVER; break;
             case '#': biome = Biomes.MOUNTAIN_EDGE; break;

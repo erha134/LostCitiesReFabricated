@@ -4,7 +4,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
-import mcjty.lostcities.LostCities;
 import mcjty.lostcities.api.ILostCityAsset;
 import mcjty.lostcities.setup.ModSetup;
 import mcjty.lostcities.worldgen.lost.BuildingInfo;

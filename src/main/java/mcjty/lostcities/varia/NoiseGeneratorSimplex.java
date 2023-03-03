@@ -106,14 +106,14 @@ public class NoiseGeneratorSimplex {
         return 70.0D * (d0 + d1 + d2);
     }
 
-    public void add(double[] buffer, double p_151606_2_, double p_151606_4_, int p_151606_6_, int p_151606_7_, double p_151606_8_, double p_151606_10_, double p_151606_12_) {
+    public void add(double[] buffer, double x, double z, int xWidth, int zWidth, double xScale, double zScale, double factor) {
         int i = 0;
 
-        for (int j = 0; j < p_151606_7_; ++j) {
-            double d0 = (p_151606_4_ + j) * p_151606_10_ + this.yo;
+        for (int zz = 0; zz < zWidth; ++zz) {
+            double d0 = (z + zz) * zScale + this.yo;
 
-            for (int k = 0; k < p_151606_6_; ++k) {
-                double d1 = (p_151606_2_ + k) * p_151606_8_ + this.xo;
+            for (int xx = 0; xx < xWidth; ++xx) {
+                double d1 = (x + xx) * xScale + this.xo;
                 double d5 = (d1 + d0) * F2;
                 int l = fastFloor(d1 + d5);
                 int i1 = fastFloor(d0 + d5);
@@ -173,7 +173,7 @@ public class NoiseGeneratorSimplex {
                 }
 
                 int i3 = i++;
-                buffer[i3] += 70.0D * (d2 + d3 + d4) * p_151606_12_;
+                buffer[i3] += 70.0D * (d2 + d3 + d4) * factor;
             }
         }
     }

@@ -30,7 +30,8 @@ public class DefaultDimensionInfo implements IDimensionInfo {
         this.world = world;
         this.profile = profile;
         style = AssetRegistries.WORLDSTYLES.get("standard");
-        feature = new LostCityTerrainFeature(this, profile, getRandom());
+        Random random = new Random(world.getSeed());
+        feature = new LostCityTerrainFeature(this, profile, random);
         feature.setupStates(profile);
         biomeRegistry = DynamicRegistries.builtin().registry(Registry.BIOME_REGISTRY).get();
     }

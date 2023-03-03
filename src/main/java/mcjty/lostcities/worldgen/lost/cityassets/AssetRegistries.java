@@ -3,7 +3,6 @@ package mcjty.lostcities.worldgen.lost.cityassets;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import mcjty.lostcities.LostCities;
 import mcjty.lostcities.setup.ModSetup;
 import mcjty.lostcities.varia.Counter;
 

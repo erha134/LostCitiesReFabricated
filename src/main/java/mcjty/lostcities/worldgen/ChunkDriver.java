@@ -9,6 +9,7 @@ import net.minecraft.world.chunk.ChunkStatus;
 import net.minecraft.world.chunk.IChunk;
 import net.minecraft.world.gen.WorldGenRegion;
 
+import java.util.Objects;
 import java.util.function.Predicate;
 
 public class ChunkDriver {
@@ -182,7 +183,7 @@ public class ChunkDriver {
     }
 
     private static boolean canAttach(BlockState state) {
-        if (state.isAir()) {
+        if (Objects.requireNonNull(state.getBlock().getRegistryName()).toString().equals("minecraft:air")) {
             return false;
         }
         if (state.canOcclude()) {
@@ -209,6 +210,8 @@ public class ChunkDriver {
             state = state.setValue(FourWayBlock.SOUTH, canAttach(southState));
         } else if (state.getBlock() instanceof StairsBlock) {
             state = state.setValue(StairsBlock.SHAPE, getShapeProperty(state, region, pos.set(cx, cy, cz)));
+        } else if (state.getBlock() instanceof StructureVoidBlock) {
+            return null;
         }
         return state;
     }

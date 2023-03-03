@@ -1,6 +1,5 @@
 package mcjty.lostcities.worldgen;
 
-import mcjty.lostcities.LostCities;
 import mcjty.lostcities.config.BiomeSelectionStrategy;
 import mcjty.lostcities.config.LostCityConfiguration;
 import mcjty.lostcities.setup.ModSetup;
@@ -82,7 +81,7 @@ public class BiomeTranslator {
         ModSetup.getLogger().info("Dumping biome mapping");
         for (Map.Entry<ResourceLocation, Biome> entry : translationMap.entrySet()) {
             ResourceLocation biomeKey = ForgeRegistries.BIOMES.getKey(entry.getValue());
-            ModSetup.getLogger().info("biome: " + entry.getKey() + " -> " + Objects.requireNonNull(entry.getValue().getRegistryName()).toString() + " (" + Objects.requireNonNull(biomeKey).toString() + ")");
+            ModSetup.getLogger().info("biome: " + entry.getKey() + " -> " + Objects.requireNonNull(entry.getValue().getRegistryName()) + " (" + Objects.requireNonNull(biomeKey) + ")");
         }
     }
 

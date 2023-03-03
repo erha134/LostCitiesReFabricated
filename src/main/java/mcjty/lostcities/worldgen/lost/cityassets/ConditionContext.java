@@ -8,8 +8,8 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.function.Predicate;
 
 public abstract class ConditionContext {
-    private final int level;        // Global level in world with 0 being to lowest possible level where a building section can be
-    private final int floor;        // Level of the building with 0 being the ground floor. floor == floorsAboveGround means the top of the building section
+    private final int level;        // Global level in world with 0 being to the lowest possible level where a building section can be
+    private final int floor;        // Level of the building with 0 being the first floor. floor == floorsAboveGround means the top of the building section
     private final int floorsBelowGround;    // 0 means nothing below ground
     private final int floorsAboveGround;    // 1 means 1 floor above ground
     private final String part;
@@ -88,7 +88,7 @@ public abstract class ConditionContext {
         }
         if (obj.has("inbiome")) {
             String biome = obj.get("inbiome").getAsString();
-            test = combine(test, context -> biome.equals(context.getBiome()));
+            test = combine(test, context -> biome.equals(context.getBiome().toString()));
         }
         if (obj.has("cellar")) {
             boolean cellar = obj.get("cellar").getAsBoolean();

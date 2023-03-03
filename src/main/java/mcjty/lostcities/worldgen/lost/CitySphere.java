@@ -1,6 +1,5 @@
 package mcjty.lostcities.worldgen.lost;
 
-import mcjty.lostcities.LostCities;
 import mcjty.lostcities.api.ILostSphere;
 import mcjty.lostcities.config.LostCityProfile;
 import mcjty.lostcities.setup.ModSetup;
