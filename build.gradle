@@ -9,7 +9,6 @@ buildscript {
     }
 }
 apply plugin: 'net.minecraftforge.gradle'
-apply plugin: 'com.matthewprenger.cursegradle'
 apply plugin: 'maven-publish'
 
 version = '1.16-4.2'
