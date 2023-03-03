@@ -83,7 +83,7 @@ public class LostCityTerrainFeature {
     private static BlockState[] randomLeafs = null;
     private static BlockState[] randomDirt = null;
 
-    static Material[] plantMaterials = new Material[]{Material.PLANT, Material.WATER_PLANT, Material.REPLACEABLE_WATER_PLANT, Material.REPLACEABLE_PLANT, Material.REPLACEABLE_FIREPROOF_PLANT, Material.BAMBOO_SAPLING, Material.BAMBOO, Material.WOOD, Material.LEAVES};
+    static final Material[] plantMaterials = new Material[]{Material.PLANT, Material.WATER_PLANT, Material.REPLACEABLE_WATER_PLANT, Material.REPLACEABLE_PLANT, Material.REPLACEABLE_FIREPROOF_PLANT, Material.BAMBOO_SAPLING, Material.BAMBOO, Material.WOOD, Material.LEAVES};
 
     private final ChunkDriver driver;
 
@@ -1908,10 +1908,6 @@ public int needsSplitting() {
 
         if (canDoParks) {
             int height = info.getCityGroundLevel();
-            // In default landscape type we clear the landscape on top of the building
-            //if (profile.isDefault()) {
-            //    clearToMax(info, heightmap, height);
-           // }
 
             BuildingInfo.StreetType streetType = info.streetType;
             boolean elevated = info.isElevatedParkSection();

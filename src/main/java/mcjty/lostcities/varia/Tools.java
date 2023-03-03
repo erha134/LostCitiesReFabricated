@@ -4,7 +4,6 @@ import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.block.*;
 import net.minecraft.command.arguments.BlockStateParser;
-import net.minecraft.data.TagsProvider;
 import net.minecraft.state.properties.Half;
 import net.minecraft.state.properties.RailShape;
 import net.minecraft.state.properties.SlabType;
@@ -14,13 +13,11 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.datafix.fixes.BlockStateFlatteningMap;
 import net.minecraft.util.datafix.fixes.ItemStackDataFlattening;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.registry.DefaultedRegistry;
 import net.minecraft.util.registry.DynamicRegistries;
 import net.minecraft.util.registry.MutableRegistry;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.ObjectHolder;
 import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nullable;
@@ -69,12 +66,10 @@ public class Tools {
         }
 
         String converted = ItemStackDataFlattening.updateItem(s, meta);
-        if (converted != null) {
-            s = converted;
-        } else {
+        if (converted == null) {
             converted = BlockStateFlatteningMap.upgradeBlock(s);
-            s = converted;
         }
+        s = converted;
         Block value = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(s));
         if (value == null) {
             throw new RuntimeException("Cannot find block: '" + s + "'!");

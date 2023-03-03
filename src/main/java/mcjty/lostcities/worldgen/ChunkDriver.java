@@ -222,14 +222,13 @@ public class ChunkDriver {
     }
 
     public ChunkDriver block(BlockState c) {
-//        validate();
-        primer.setBlockState(current, correct(c), false);
+        primer.setBlockState(current, Objects.requireNonNull(correct(c)), false);
         return this;
     }
 
     public ChunkDriver add(BlockState state) {
 //        validate();
-        primer.setBlockState(current, correct(state), false);
+        primer.setBlockState(current, Objects.requireNonNull(correct(state)), false);
         incY();
         return this;
     }
