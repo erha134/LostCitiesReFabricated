@@ -210,8 +210,6 @@ public class ChunkDriver {
             state = state.setValue(FourWayBlock.SOUTH, canAttach(southState));
         } else if (state.getBlock() instanceof StairsBlock) {
             state = state.setValue(StairsBlock.SHAPE, getShapeProperty(state, region, pos.set(cx, cy, cz)));
-        } else if (state.getBlock() instanceof StructureVoidBlock) {
-            return null;
         }
         return state;
     }
@@ -222,13 +220,13 @@ public class ChunkDriver {
     }
 
     public ChunkDriver block(BlockState c) {
-        primer.setBlockState(current, Objects.requireNonNull(correct(c)), false);
+        primer.setBlockState(current, correct(c), false);
         return this;
     }
 
     public ChunkDriver add(BlockState state) {
 //        validate();
-        primer.setBlockState(current, Objects.requireNonNull(correct(state)), false);
+        primer.setBlockState(current, correct(state), false);
         incY();
         return this;
     }
