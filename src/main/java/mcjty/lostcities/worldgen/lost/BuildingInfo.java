@@ -190,7 +190,7 @@ public class BuildingInfo implements ILostChunkInfo {
             return this;
         } else if (x < 8 && z >= 8) {
             return getXmin();
-        } else if (x >= 8 && z < 8) {
+        } else if (x >= 8) {
             return getZmin();
         } else {
             return getXmin().getZmin();
@@ -949,9 +949,6 @@ public class BuildingInfo implements ILostChunkInfo {
      * This function does not use the cache. So safe to use when the cache is building
      */
     public static int getCityLevel(int chunkX, int chunkZ, IDimensionInfo provider) {
-//        if (provider.otherGenerator != null) {
-//            int height = provider.otherGenerator.getHeight(chunkX, chunkZ, 8, 8);
-//            return getLevelBasedOnHeight(height, provider.getProfile());
         if (provider.getProfile().isSpace()) {
             return getCityLevelSpace(chunkX, chunkZ, provider);
         } else if (provider.getProfile().isFloating()) {

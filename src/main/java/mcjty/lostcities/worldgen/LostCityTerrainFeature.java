@@ -1,6 +1,5 @@
 package mcjty.lostcities.worldgen;
 
-import it.unimi.dsi.fastutil.longs.LongSet;
 import mcjty.lostcities.api.RailChunkType;
 import mcjty.lostcities.config.LostCityConfiguration;
 import mcjty.lostcities.config.LostCityProfile;
@@ -32,7 +31,6 @@ import net.minecraft.world.chunk.IChunk;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.NoiseChunkGenerator;
 import net.minecraft.world.gen.WorldGenRegion;
-import net.minecraft.world.gen.feature.structure.Structure;
 import net.minecraft.world.server.ServerChunkProvider;
 import net.minecraft.world.spawner.AbstractSpawner;
 import net.minecraftforge.common.Tags;
@@ -350,8 +348,6 @@ public class LostCityTerrainFeature {
         streetBorder = (16 - cityStyle.getStreetWidth()) / 2;
 
         boolean doCity = info.isCity || (info.outsideChunk && info.hasBuilding);
-        Map<Structure<?>, LongSet> references = region.getChunk(chunkX, chunkZ).getAllReferences();
-        if (references.containsKey(Structure.VILLAGE) && !references.get(Structure.VILLAGE).isEmpty()) doCity = false;
 
         // If this chunk has a building or street but we're in a floating profile and
         // we happen to have a void chunk we detect that here and go back to normal chunk generation
@@ -360,7 +356,6 @@ public class LostCityTerrainFeature {
             boolean v = isVoid(2, 2) || isVoid(2, 14) || isVoid(14, 2) || isVoid(14, 14) || isVoid(8, 8);
             doCity = !v;
         }
-
 
         if (doCity) {
             doCityChunk(chunkX, chunkZ, info);
@@ -396,7 +391,6 @@ public class LostCityTerrainFeature {
 
         driver.setPrimer(oldRegion, oldChunk);
     }
-
 
     private void generateMonorails(BuildingInfo info) {
         Transform transform;
@@ -1237,18 +1231,11 @@ public class LostCityTerrainFeature {
                 }
             }
         }
-
-
-        // @todo 1.14
-//        LostCityEvent.PreGenCityChunkEvent event = new LostCityEvent.PreGenCityChunkEvent(provider.worldObj, provider, chunkX, chunkZ, driver.getPrimer());
-//        if (!MinecraftForge.EVENT_BUS.post(event)) {
-            if (building) {
-                generateBuilding(info, heightmap);
-            } else {
-                generateStreet(info, heightmap, rand);
-            }
-//        }
-
+        if (building) {
+            generateBuilding(info, heightmap);
+        } else {
+            generateStreet(info, heightmap, rand);
+        }
         if (info.profile.RUIN_CHANCE > 0.0) {
             generateRuins(info);
         }
