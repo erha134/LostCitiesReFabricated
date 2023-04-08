@@ -1,5 +1,6 @@
 package mcjty.lostcities.worldgen;
 
+import it.unimi.dsi.fastutil.longs.LongSet;
 import mcjty.lostcities.api.RailChunkType;
 import mcjty.lostcities.config.LostCityConfiguration;
 import mcjty.lostcities.config.LostCityProfile;
@@ -31,6 +32,7 @@ import net.minecraft.world.chunk.IChunk;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.NoiseChunkGenerator;
 import net.minecraft.world.gen.WorldGenRegion;
+import net.minecraft.world.gen.feature.structure.Structure;
 import net.minecraft.world.server.ServerChunkProvider;
 import net.minecraft.world.spawner.AbstractSpawner;
 import net.minecraftforge.common.Tags;
@@ -348,6 +350,9 @@ public class LostCityTerrainFeature {
         streetBorder = (16 - cityStyle.getStreetWidth()) / 2;
 
         boolean doCity = info.isCity || (info.outsideChunk && info.hasBuilding);
+        Map<Structure<?>, LongSet> references = region.getChunk(chunkX, chunkZ).getAllReferences();
+        if (references.containsKey(Structure.VILLAGE) && !references.get(Structure.VILLAGE).isEmpty()) doCity = false;
+
         // If this chunk has a building or street but we're in a floating profile and
         // we happen to have a void chunk we detect that here and go back to normal chunk generation
         // anyway
@@ -381,14 +386,11 @@ public class LostCityTerrainFeature {
         // primer vs generating it here
         rand.setSeed(chunkX * 257017164707L + chunkZ * 101754694003L);
 
-//        LostCityEvent.PreExplosionEvent event = new LostCityEvent.PreExplosionEvent(provider.getWorld().getWorld(), provider, chunkX, chunkZ, driver.getPrimer());
-//        if (!MinecraftForge.EVENT_BUS.post(event)) {
-            if (info.getDamageArea().hasExplosions()) {
-                breakBlocksForDamage(chunkX, chunkZ, info);
-                fixAfterExplosionNew(info, rand);
-            }
-            generateDebris(rand, info);
-//        }
+        if (info.getDamageArea().hasExplosions()) {
+            breakBlocksForDamage(chunkX, chunkZ, info);
+            fixAfterExplosionNew(info, rand);
+        }
+        generateDebris(rand, info);
 
         ChunkFixer.fix(provider, chunkX, chunkZ);
 
@@ -1197,7 +1199,6 @@ public class LostCityTerrainFeature {
 
     }
 
-
     private void doCityChunk(int chunkX, int chunkZ, BuildingInfo info) {
         boolean building = info.hasBuilding;
 
@@ -1570,7 +1571,7 @@ public class LostCityTerrainFeature {
             return highestY;
         }
 
-public int needsSplitting() {
+        public int needsSplitting() {
             float averageBlocksPerLevel = (float) connectedBlocks.size() / (highestY - lowestY + 1);
             int connectionThreshold = (int) (averageBlocksPerLevel / 10);
             if (connectionThreshold <= 0) {
