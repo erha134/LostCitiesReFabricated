@@ -8,4 +8,5 @@ Replace the cobblestone walls and glass panes generated in the cities with stone
 
 Fix day/night cycle (See [#494](https://github.com/McJtyMods/LostCities/pull/494)).
 
-Cleaner codes(Suggestions by IDEA).
+# Issues Report
+https://github.com/MCTeamPotato/Kasualix-Issue-Tracker
