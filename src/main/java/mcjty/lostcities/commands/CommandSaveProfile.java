@@ -8,7 +8,6 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import mcjty.lostcities.config.LostCityConfiguration;
 import mcjty.lostcities.config.LostCityProfile;
 import net.minecraft.command.CommandSource;
@@ -16,7 +15,6 @@ import net.minecraft.command.Commands;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 
@@ -33,7 +31,7 @@ public class CommandSaveProfile implements Command<CommandSource> {
 
 
     @Override
-    public int run(CommandContext<CommandSource> context) throws CommandSyntaxException {
+    public int run(CommandContext<CommandSource> context) {
         String name = context.getArgument("profile", String.class);
         LostCityProfile profile = LostCityConfiguration.standardProfiles.get(name);
         if (profile == null) {
@@ -43,7 +41,7 @@ public class CommandSaveProfile implements Command<CommandSource> {
         JsonObject jsonObject = profile.toJson(false);
         Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
         try {
-            try (PrintWriter writer = new PrintWriter(new File(name + ".json"))) {
+            try (PrintWriter writer = new PrintWriter(name + ".json")) {
                 writer.print(gson.toJson(jsonObject));
                 writer.flush();
             }

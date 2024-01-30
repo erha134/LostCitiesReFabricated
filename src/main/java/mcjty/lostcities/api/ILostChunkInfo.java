@@ -54,7 +54,6 @@ public interface ILostChunkInfo {
 
     /**
      * Get the number of cellars of a building (below ground)
-     * @return
      */
     int getNumCellars();
 

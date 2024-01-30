@@ -25,9 +25,9 @@ import java.util.function.Supplier;
 public class LostCities {
     public static final String MODID = "lostcities";
 
-    public static Logger logger = LogManager.getLogger(LostCities.MODID);
+    public static final Logger logger = LogManager.getLogger(LostCities.MODID);
 
-    public static ModSetup setup = new ModSetup();
+    public static final ModSetup setup = new ModSetup();
     public static LostCities instance;
     public static LostCitiesImp lostCitiesImp = new LostCitiesImp();
 
@@ -45,9 +45,7 @@ public class LostCities {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(setup::init);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::processIMC);
 
-        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
-            FMLJavaModLoadingContext.get().getModEventBus().addListener(ClientSetup::init);
-        });
+        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> FMLJavaModLoadingContext.get().getModEventBus().addListener(ClientSetup::init));
     }
 
     public static Logger getLogger() {

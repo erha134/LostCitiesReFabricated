@@ -32,20 +32,20 @@ public class Config {
             "/assets/lostcities/citydata/library.json",
             "$lostcities/userassets.json"
     };
-    public static ForgeConfigSpec.ConfigValue<List<? extends String>> ASSETS;
+    public static final ForgeConfigSpec.ConfigValue<List<? extends String>> ASSETS;
 
 
     private static final String[] DEFAULT_DIMENSION_PROFILES = new String[] {
             "lostcities:lostcity=default"
     };
-    private static ForgeConfigSpec.ConfigValue<List<? extends String>> DIMENSION_PROFILES;
+    private static final ForgeConfigSpec.ConfigValue<List<? extends String>> DIMENSION_PROFILES;
     private static Map<RegistryKey<World>, String> dimensionProfileCache = null;
 
     // Profile as selected by the client
     public static String profileFromClient = null;
     public static String jsonFromClient = null;
-    public static ForgeConfigSpec.ConfigValue<String> SELECTED_PROFILE;
-    public static ForgeConfigSpec.ConfigValue<String> SELECTED_CUSTOM_JSON;
+    public static final ForgeConfigSpec.ConfigValue<String> SELECTED_PROFILE;
+    public static final ForgeConfigSpec.ConfigValue<String> SELECTED_CUSTOM_JSON;
 
     public static void reset() {
         profileFromClient = null;
@@ -144,7 +144,7 @@ public class Config {
         SERVER_CONFIG = SERVER_BUILDER.build();
     }
 
-    public static ForgeConfigSpec COMMON_CONFIG;
-    public static ForgeConfigSpec CLIENT_CONFIG;
-    public static ForgeConfigSpec SERVER_CONFIG;
+    public static final ForgeConfigSpec COMMON_CONFIG;
+    public static final ForgeConfigSpec CLIENT_CONFIG;
+    public static final ForgeConfigSpec SERVER_CONFIG;
 }

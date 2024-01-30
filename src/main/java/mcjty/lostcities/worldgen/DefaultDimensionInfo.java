@@ -30,7 +30,8 @@ public class DefaultDimensionInfo implements IDimensionInfo {
         this.world = world;
         this.profile = profile;
         style = AssetRegistries.WORLDSTYLES.get("standard");
-        feature = new LostCityTerrainFeature(this, profile, getRandom());
+        Random random = new Random(world.getSeed());
+        feature = new LostCityTerrainFeature(this, profile, random);
         feature.setupStates(profile);
         biomeRegistry = DynamicRegistries.builtin().registry(Registry.BIOME_REGISTRY).get();
     }
@@ -85,16 +86,7 @@ public class DefaultDimensionInfo implements IDimensionInfo {
         return feature.getHeightmap(chunkX, chunkZ, getWorld());
     }
 
-//    @Override
-//    public Biome[] getBiomes(int chunkX, int chunkZ) {
-//        AbstractChunkProvider chunkProvider = getWorld().getChunkProvider();
-//        if (chunkProvider instanceof ServerChunkProvider) {
-//            BiomeProvider biomeProvider = ((ServerChunkProvider) chunkProvider).getChunkGenerator().getBiomeProvider();
-//            return biomeProvider.getBiomes((chunkX - 1) * 4 - 2, chunkZ * 4 - 2, 10, 10, false);
-//        }
-//    }
-//
-    @Override
+@Override
     public Biome getBiome(BlockPos pos) {
         AbstractChunkProvider chunkProvider = getWorld().getChunkSource();
         if (chunkProvider instanceof ServerChunkProvider) {

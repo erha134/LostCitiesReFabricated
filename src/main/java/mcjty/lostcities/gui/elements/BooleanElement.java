@@ -3,6 +3,7 @@ package mcjty.lostcities.gui.elements;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import mcjty.lostcities.config.Configuration;
 import mcjty.lostcities.gui.GuiLCConfig;
+import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 
@@ -27,31 +28,28 @@ public class BooleanElement extends GuiElement {
             }
             gui.getLocalSetup().get().ifPresent(profile -> {
                 Configuration configuration = profile.toConfiguration();
-                configuration.set(attribute, "On".equals(button.getMessage()));
+                configuration.set(attribute, "On".equals(button.getMessage().getString()));
                 profile.copyFromConfiguration(configuration);
                 gui.refreshPreview();
             });
         }) {
             @Override
             public void renderToolTip(MatrixStack stack, int x, int y) {
-                gui.getLocalSetup().get().ifPresent(h -> {
-                    gui.renderTooltip(stack, h.toConfiguration().getValue(attribute).getComment(), x, y);
-                });
+                gui.getLocalSetup().get().ifPresent(h -> gui.renderTooltip(stack, h.toConfiguration().getValue(attribute).getComment(), x, y));
             }
         };
         gui.addWidget(field);
     }
 
-    public BooleanElement label(String label) {
+    public void label(String label) {
         this.label = label;
-        return this;
     }
 
     @Override
     public void render(MatrixStack stack) {
         if (label != null) {
             if (field.visible) {
-                gui.drawString(stack, gui.getFont(), label, 10, y + 5, 0xffffffff);
+                AbstractGui.drawString(stack, gui.getFont(), label, 10, y + 5, 0xffffffff);
             }
         }
     }

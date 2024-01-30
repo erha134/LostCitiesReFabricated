@@ -66,9 +66,7 @@ public class ChunkCoord {
 
         if (dimension != that.dimension) return false;
         if (chunkX != that.chunkX) return false;
-        if (chunkZ != that.chunkZ) return false;
-
-        return true;
+        return chunkZ == that.chunkZ;
     }
 
     @Override

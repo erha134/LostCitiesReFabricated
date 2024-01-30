@@ -10,6 +10,8 @@ import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.fml.server.ServerLifecycleHooks;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import java.util.Objects;
+
 public class WorldTools {
 
     public static boolean chunkLoaded(World world, BlockPos pos) {
@@ -27,7 +29,7 @@ public class WorldTools {
 
     public static ServerWorld getOverworld(World world) {
         MinecraftServer server = world.getServer();
-        return server.getLevel(World.OVERWORLD);
+        return Objects.requireNonNull(server).getLevel(World.OVERWORLD);
     }
 
     public static ServerWorld loadWorld(RegistryKey<World> type) {
@@ -46,7 +48,7 @@ public class WorldTools {
 
     public static ServerWorld getWorld(World world, RegistryKey<World> type) {
         MinecraftServer server = world.getServer();
-        return server.getLevel(type);
+        return Objects.requireNonNull(server).getLevel(type);
     }
 
     /**

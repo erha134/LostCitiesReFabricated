@@ -36,7 +36,7 @@
         },
         {
           "factor": 1.0,
-          "palette": "glass_pane"
+          "palette": "glass_full"
         },
         {
           "factor": 1.0,
@@ -44,7 +44,7 @@
         },
         {
           "factor": 1.0,
-          "palette": "glass_pane_white"
+          "palette": "glass_full_white"
         },
         {
           "factor": 1.0,
@@ -52,7 +52,7 @@
         },
         {
           "factor": 1.0,
-          "palette": "glass_pane_blue"
+          "palette": "glass_full_blue"
         },
         {
           "factor": 1.0,
@@ -60,7 +60,7 @@
         },
         {
           "factor": 1.0,
-          "palette": "glass_pane_light_blue"
+          "palette": "glass_full_light_blue"
         },
         {
           "factor": 1.0,
@@ -68,7 +68,7 @@
         },
         {
           "factor": 1.0,
-          "palette": "glass_pane_gray"
+          "palette": "glass_full_gray"
         }
       ],
       [
@@ -276,7 +276,7 @@
       },
       {
         "char": "w",
-        "block": "minecraft:cobblestone_wall"
+        "block": "minecraft:stone_bricks"
       },
       {
         "char": ":",

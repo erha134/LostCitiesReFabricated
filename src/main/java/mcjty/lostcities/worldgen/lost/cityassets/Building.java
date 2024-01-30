@@ -97,10 +97,9 @@ public class Building implements ILostCityBuilding {
     }
 
 
-    public Building addPart(Predicate<ConditionContext> test, String partName,
-                            List<Pair<Predicate<ConditionContext>, String>> parts) {
+    public void addPart(Predicate<ConditionContext> test, String partName,
+                        List<Pair<Predicate<ConditionContext>, String>> parts) {
         parts.add(Pair.of(test, partName));
-        return this;
     }
 
     @Override

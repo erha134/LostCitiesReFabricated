@@ -141,13 +141,14 @@ public class NullDimensionInfo implements IDimensionInfo {
         char b = getBiomeChar(chunkX, chunkZ);
         int y = 65;
         switch (b) {
-            case 'p': y = 65; break;
+            case 'p':
+            case 'd':
+            case '*':
+            case '=':
+                break;
             case '-': y = 60; break;
-            case '=': y = 65; break;
             case '#': y = 95; break;
             case '+': y = 125; break;
-            case '*': y = 65; break;
-            case 'd': y = 65; break;
         }
         for (int x = 0 ; x < 16 ; x++) {
             for (int z = 0 ; z < 16 ; z++) {
@@ -165,33 +166,14 @@ public class NullDimensionInfo implements IDimensionInfo {
         }
     }
 
-//    @Override
-//    public Biome[] getBiomes(int chunkX, int chunkZ) {
-//        Biome[] biomes = new Biome[10*10];
-//        Biome biome = Biomes.PLAINS;
-//        char b = getBiomeChar(chunkX, chunkZ);
-//        switch (b) {
-//            case 'p': biome = Biomes.PLAINS; break;
-//            case '-': biome = Biomes.OCEAN; break;
-//            case '=': biome = Biomes.RIVER; break;
-//            case '#': biome = Biomes.MOUNTAIN_EDGE; break;
-//            case '+': biome = Biomes.MOUNTAINS; break;
-//            case '*': biome = Biomes.BEACH; break;
-//            case 'd': biome = Biomes.DESERT; break;
-//        }
-//        for (int i = 0 ; i < biomes.length ; i++) {
-//            biomes[i] = biome;
-//        }
-//        return biomes;
-//    }
-
     @Override
     public Biome getBiome(BlockPos pos) {
         RegistryKey<Biome> biome = Biomes.PLAINS;
         ChunkPos cp = new ChunkPos(pos);
         char b = getBiomeChar(cp.x, cp.z);
         switch (b) {
-            case 'p': biome = Biomes.PLAINS; break;
+            case 'p':
+                break;
             case '-': biome = Biomes.OCEAN; break;
             case '=': biome = Biomes.RIVER; break;
             case '#': biome = Biomes.MOUNTAIN_EDGE; break;

@@ -14,8 +14,8 @@ public class Highway {
 
     private static PerlinNoiseGenerator14 perlinX = null;
     private static PerlinNoiseGenerator14 perlinZ = null;
-    private static Map<ChunkCoord, Integer> xHighwayLevelCache = new HashMap<>();
-    private static Map<ChunkCoord, Integer> zHighwayLevelCache = new HashMap<>();
+    private static final Map<ChunkCoord, Integer> xHighwayLevelCache = new HashMap<>();
+    private static final Map<ChunkCoord, Integer> zHighwayLevelCache = new HashMap<>();
 
 
     private static void makePerlin(long seed) {

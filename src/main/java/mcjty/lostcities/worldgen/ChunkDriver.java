@@ -9,6 +9,7 @@ import net.minecraft.world.chunk.ChunkStatus;
 import net.minecraft.world.chunk.IChunk;
 import net.minecraft.world.gen.WorldGenRegion;
 
+import java.util.Objects;
 import java.util.function.Predicate;
 
 public class ChunkDriver {
@@ -36,9 +37,8 @@ public class ChunkDriver {
         return this;
     }
 
-    public ChunkDriver current(BlockPos i) {
+    public void current(BlockPos i) {
         current.set(i);
-        return this;
     }
 
     public BlockPos getCurrentCopy() {
@@ -183,7 +183,7 @@ public class ChunkDriver {
     }
 
     private static boolean canAttach(BlockState state) {
-        if (state.isAir()) {
+        if (Objects.requireNonNull(state.getBlock().getRegistryName()).toString().equals("minecraft:air")) {
             return false;
         }
         if (state.canOcclude()) {
@@ -219,17 +219,7 @@ public class ChunkDriver {
         return this;
     }
 
-//    private void validate() {
-//        if (current.getX() < 0 || current.getY() < 0 || current.getZ() < 0) {
-//            throw new RuntimeException("current: " + current.getX() + "," + current.getY() + "," + current.getZ());
-//        }
-//        if (current.getX() > 15 || current.getY() > 255 || current.getZ() > 15) {
-//            throw new RuntimeException("current: " + current.getX() + "," + current.getY() + "," + current.getZ());
-//        }
-//    }
-
     public ChunkDriver block(BlockState c) {
-//        validate();
         primer.setBlockState(current, correct(c), false);
         return this;
     }

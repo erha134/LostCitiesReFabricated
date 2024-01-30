@@ -3,7 +3,7 @@ package mcjty.lostcities.worldgen.lost.cityassets;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import mcjty.lostcities.LostCities;
+import mcjty.lostcities.setup.ModSetup;
 import mcjty.lostcities.varia.Counter;
 
 import java.io.*;
@@ -23,7 +23,7 @@ public class AssetRegistries {
     public static final AbstractAssetRegistry<PredefinedCity> PREDEFINED_CITIES = new AbstractAssetRegistry<>();
     public static final AbstractAssetRegistry<PredefinedSphere> PREDEFINED_SPHERES = new AbstractAssetRegistry<>();
 
-    public static final void reset() {
+    public static void reset() {
         CONDITIONS.reset();
         WORLDSTYLES.reset();
         PARTS.reset();
@@ -84,43 +84,43 @@ public class AssetRegistries {
         List<Map.Entry<Character, Integer>> local = new ArrayList<>(counterLocal.getMap().entrySet());
         global.sort((e1, e2) -> e2.getValue().compareTo(e1.getValue()));
         local.sort((e1, e2) -> e2.getValue().compareTo(e1.getValue()));
-        LostCities.setup.getLogger().info("############################################################################");
-        LostCities.setup.getLogger().info("Global palette entries");
+        ModSetup.getLogger().info("############################################################################");
+        ModSetup.getLogger().info("Global palette entries");
         printMap(usersPerCharacter, global);
-        LostCities.setup.getLogger().info("----------------------------------------------------------------------------");
-        LostCities.setup.getLogger().info("Local palette entries");
+        ModSetup.getLogger().info("----------------------------------------------------------------------------");
+        ModSetup.getLogger().info("Local palette entries");
         printMap(usersPerCharacter, local);
-        LostCities.setup.getLogger().info("----------------------------------------------------------------------------");
+        ModSetup.getLogger().info("----------------------------------------------------------------------------");
 
         printChars("Global: ", counterGlobal);
         printChars("Local: ", counterLocal);
 
-        LostCities.setup.getLogger().info("############################################################################");
+        ModSetup.getLogger().info("############################################################################");
     }
 
     private static void printChars(String prefix, Counter<Character> counter) {
         List<Character> chars = new ArrayList<>(counter.getMap().keySet());
         chars.sort(Character::compareTo);
-        String s = "";
+        StringBuilder s = new StringBuilder();
         for (Character character : chars) {
-            s += character;
+            s.append(character);
         }
-        LostCities.setup.getLogger().info(prefix + s);
+        ModSetup.getLogger().info(prefix + s);
     }
 
     private static void printMap(Map<Character, Set<String>> usersPerCharacter, List<Map.Entry<Character, Integer>> map) {
         for (Map.Entry<Character, Integer> entry : map) {
             Set<String> users = usersPerCharacter.get(entry.getKey());
-            String s = "    " + entry.getKey() + ": " + entry.getValue() + " Uses";
+            StringBuilder s = new StringBuilder("    " + entry.getKey() + ": " + entry.getValue() + " Uses");
             if (users.size() < 10) {
-                s += ", Used by: ";
+                s.append(", Used by: ");
                 for (String user : users) {
-                    s += user + ",";
+                    s.append(user).append(",");
                 }
             } else {
-                s += ", Used " + users.size() + " times";
+                s.append(", Used ").append(users.size()).append(" times");
             }
-            LostCities.setup.getLogger().info(s);
+            ModSetup.getLogger().info(s.toString());
         }
     }
 

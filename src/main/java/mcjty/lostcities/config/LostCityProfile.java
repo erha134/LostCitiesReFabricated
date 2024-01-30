@@ -4,7 +4,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import mcjty.lostcities.LostCities;
-import mcjty.lostcities.varia.Tools;
+import mcjty.lostcities.setup.ModSetup;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -558,7 +558,7 @@ public class LostCityProfile {
             for (String s : CITY_BIOME_FACTORS) {
                 String[] split = StringUtils.split(s, '=');
                 if (split.length < 2) {
-                    LostCities.setup.getLogger().error("Badly specified biome factor. Must be <biome>=<factor>!");
+                    ModSetup.getLogger().error("Badly specified biome factor. Must be <biome>=<factor>!");
                 } else {
                     float f = Float.parseFloat(split[1]);
                     String biomeId = split[0];
@@ -566,7 +566,7 @@ public class LostCityProfile {
                     if (biome != null) {
                         biomeFactorMap.put(new ResourceLocation(biomeId), f);
                     } else {
-                        LostCities.setup.getLogger().warn("Can't find biome " + biomeId);
+                        ModSetup.getLogger().warn("Can't find biome " + biomeId);
                     }
                 }
             }
@@ -592,7 +592,7 @@ public class LostCityProfile {
         if (liquidBlock == null) {
             Block b = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(LIQUID_BLOCK));
             if (b == null) {
-                LostCities.setup.getLogger().error("Bad liquid block: " + LIQUID_BLOCK + "!");
+                ModSetup.getLogger().error("Bad liquid block: " + LIQUID_BLOCK + "!");
                 liquidBlock = Blocks.WATER.defaultBlockState();
             } else {
                 liquidBlock = b.defaultBlockState();
@@ -605,7 +605,7 @@ public class LostCityProfile {
         if (baseBlock == null) {
             Block b = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(BASE_BLOCK));
             if (b == null) {
-                LostCities.setup.getLogger().error("Bad base block: " + BASE_BLOCK + "!");
+                ModSetup.getLogger().error("Bad base block: " + BASE_BLOCK + "!");
                 baseBlock = Blocks.STONE.defaultBlockState();
             } else {
                 baseBlock = b.defaultBlockState();

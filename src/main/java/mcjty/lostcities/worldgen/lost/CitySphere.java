@@ -1,8 +1,8 @@
 package mcjty.lostcities.worldgen.lost;
 
-import mcjty.lostcities.LostCities;
 import mcjty.lostcities.api.ILostSphere;
 import mcjty.lostcities.config.LostCityProfile;
+import mcjty.lostcities.setup.ModSetup;
 import mcjty.lostcities.varia.ChunkCoord;
 import mcjty.lostcities.worldgen.BiomeTranslator;
 import mcjty.lostcities.worldgen.IDimensionInfo;
@@ -25,7 +25,7 @@ import java.util.*;
 
 public class CitySphere implements ILostSphere {
 
-    private static Map<ChunkCoord, CitySphere> citySphereCache = new HashMap<>();
+    private static final Map<ChunkCoord, CitySphere> citySphereCache = new HashMap<>();
 
     public static final CitySphere EMPTY = new CitySphere(new ChunkCoord(World.OVERWORLD, 0, 0), 0.0f, new BlockPos(0, 0, 0), false);
 
@@ -287,10 +287,7 @@ public class CitySphere implements ILostSphere {
         if (squaredDistance(cx, cz, chunkX*16, chunkZ*16+15) > sqradiusOffset) {
             return false;
         }
-        if (squaredDistance(cx, cz, chunkX*16+15, chunkZ*16+15) > sqradiusOffset) {
-            return false;
-        }
-        return true;
+        return !(squaredDistance(cx, cz, chunkX * 16 + 15, chunkZ * 16 + 15) > sqradiusOffset);
     }
 
     /**
@@ -319,10 +316,7 @@ public class CitySphere implements ILostSphere {
         if (squaredDistance(cx, cz, chunkX*16, chunkZ*16+15) <= sqradiusOffset) {
             return true;
         }
-        if (squaredDistance(cx, cz, chunkX*16+15, chunkZ*16+15) <= sqradiusOffset) {
-            return true;
-        }
-        return false;
+        return squaredDistance(cx, cz, chunkX * 16 + 15, chunkZ * 16 + 15) <= sqradiusOffset;
     }
 
 
@@ -386,7 +380,7 @@ public class CitySphere implements ILostSphere {
             if (predef != null && predef.getBiome() != null) {
                 citySphere.biome = ForgeRegistries.BIOMES.getValue(new ResourceLocation(predef.getBiome()));
                 if (citySphere.biome == null) {
-                    LostCities.setup.getLogger().warn("Could not find biome '" + predef.getBiome() + "'!");
+                    ModSetup.getLogger().warn("Could not find biome '" + predef.getBiome() + "'!");
                 }
             } else if (profile.CITYSPHERE_SINGLE_BIOME) {
                 if (profile.ALLOWED_BIOME_FACTORS.length == 0) {

@@ -128,8 +128,8 @@ public class BuildingInfo implements ILostChunkInfo {
     }
 
     // BuildingInfo cache
-    private static Map<ChunkCoord, BuildingInfo> buildingInfoMap = new HashMap<>();
-    private static Map<ChunkCoord, LostChunkCharacteristics> cityInfoMap = new HashMap<>();
+    private static final Map<ChunkCoord, BuildingInfo> buildingInfoMap = new HashMap<>();
+    private static final Map<ChunkCoord, LostChunkCharacteristics> cityInfoMap = new HashMap<>();
 
     public void addSaplingTodo(BlockPos pos) {
         saplingTodo.add(pos);
@@ -190,7 +190,7 @@ public class BuildingInfo implements ILostChunkInfo {
             return this;
         } else if (x < 8 && z >= 8) {
             return getXmin();
-        } else if (x >= 8 && z < 8) {
+        } else if (x >= 8) {
             return getZmin();
         } else {
             return getXmin().getZmin();
@@ -416,9 +416,6 @@ public class BuildingInfo implements ILostChunkInfo {
             }
 
             // @todo 1.14
-//            LostCityEvent.CharacteristicsEvent event = new LostCityEvent.CharacteristicsEvent(provider.worldObj, provider,
-//                    chunkX, chunkZ, characteristics);
-//            MinecraftForge.EVENT_BUS.post(event);
 
             cityInfoMap.put(key, characteristics);
             return characteristics;
@@ -952,9 +949,6 @@ public class BuildingInfo implements ILostChunkInfo {
      * This function does not use the cache. So safe to use when the cache is building
      */
     public static int getCityLevel(int chunkX, int chunkZ, IDimensionInfo provider) {
-//        if (provider.otherGenerator != null) {
-//            int height = provider.otherGenerator.getHeight(chunkX, chunkZ, 8, 8);
-//            return getLevelBasedOnHeight(height, provider.getProfile());
         if (provider.getProfile().isSpace()) {
             return getCityLevelSpace(chunkX, chunkZ, provider);
         } else if (provider.getProfile().isFloating()) {
@@ -996,27 +990,6 @@ public class BuildingInfo implements ILostChunkInfo {
 
     private static int getCityLevelNormal(int chunkX, int chunkZ, IDimensionInfo provider, LostCityProfile profile) {
         // OLD METHOD:
-//        Biome[] biomes = BiomeInfo.getBiomeInfo(provider, new ChunkCoord(provider.getType(), chunkX, chunkZ)).getBiomes();
-//        float h = 0.0f;
-//        for (Biome biome : biomes) {
-//            h += biome.getDepth();
-//        }
-//        h /= biomes.length;
-//
-//        int height = 0;
-//
-//        if (h < 0.15f) {
-//            height = 70;
-//        } else if (h < 0.4f) {
-//            height = 79;
-//        } else if (h < 0.7f) {
-//            height = 88;
-//        } else if (h < 1.3) {
-//            height = 95;
-//        } else {
-//            height = 100;
-//        }
-//        int level1 = getLevelBasedOnHeight(height, profile);
 
         ChunkHeightmap heightmap = provider.getHeightmap(chunkX, chunkZ);
         int height = heightmap.getAverageHeight();
@@ -1086,15 +1059,13 @@ public class BuildingInfo implements ILostChunkInfo {
             case 3:
                 doorBlock = Blocks.SPRUCE_DOOR;
                 break;
-            case 4:
-                doorBlock = Blocks.OAK_DOOR;
-                break;
             case 5:
                 doorBlock = Blocks.JUNGLE_DOOR;
                 break;
             case 6:
                 doorBlock = Blocks.IRON_DOOR;
                 break;
+            case 4:
             default:
                 doorBlock = Blocks.OAK_DOOR;
         }
@@ -1405,24 +1376,22 @@ public class BuildingInfo implements ILostChunkInfo {
     public boolean doesRoadExtendTo() {
         boolean b = isCity && !hasBuilding;
         if (b) {
-            return !isElevatedParkSection();
+            return isElevatedParkSection();
         }
-        return false;
+        return true;
     }
 
     // Return true if there can be a road connection between the two given chunks
     public static boolean hasRoadConnection(BuildingInfo i1, BuildingInfo i2) {
-        if (!i1.doesRoadExtendTo()) {
+        if (i1.doesRoadExtendTo()) {
             return false;
         }
-        if (!i2.doesRoadExtendTo()) {
+        if (i2.doesRoadExtendTo()) {
             return false;
         }
-        if (Math.abs(i1.cityLevel - i2.cityLevel) <= 0 /* @todo temporary, should be <= 1 */) {
-            // We allow a road difference of 1 maximum
-            return true;
-        }
-        return false;
+        /* @todo temporary, should be <= 1 */
+        // We allow a road difference of 1 maximum
+        return Math.abs(i1.cityLevel - i2.cityLevel) <= 0;
     }
 
     public static Random getBuildingRandom(int chunkX, int chunkZ, long seed) {
@@ -1473,13 +1442,10 @@ public class BuildingInfo implements ILostChunkInfo {
             }
 
             int local = adj.globalToLocal(cityLevel);
-            if (adj.isValidFloor(local) && adj.getFloor(local).getMetaBoolean("dontconnect")) {
-                return false;
-            }
+            return !adj.isValidFloor(local) || !adj.getFloor(local).getMetaBoolean("dontconnect");
         } else {
             return false;
         }
-        return true;
     }
 
 

@@ -36,10 +36,7 @@ public class LostCitySetup {
         if (profile == null) {
             return false;
         }
-        if ("customized".equals(profile)) {
-            return false;
-        }
-        return true;
+        return !"customized".equals(profile);
     }
 
     public String getProfile() {
@@ -83,30 +80,16 @@ public class LostCitySetup {
         }
     }
 
-//    public Optional<Configuration> getConfig() {
-//        if (profile == null) {
-//            return Optional.empty();
-//        } else if ("customized".equals(profile)) {
-//
-//        } else {
-//
-//        }
-//    }
-
     public void toggleProfile(/* @todo 1.16 WorldType worldType */) {
         if (profiles == null) {
             String preferedProfile = "default";
             // @todo 1.16
-//            if ("lc_cavern".equals(worldType.getName())) {
-//                preferedProfile = "cavern";
-//            }
             profiles = new ArrayList<>(LostCityConfiguration.standardProfiles.keySet());
-            String finalPreferedProfile = preferedProfile;
             profiles.sort((o1, o2) -> {
-                if (finalPreferedProfile.equals(o1)) {
+                if (preferedProfile.equals(o1)) {
                     return -1;
                 }
-                if (finalPreferedProfile.equals(o2)) {
+                if (preferedProfile.equals(o2)) {
                     return 1;
                 }
                 return o1.compareTo(o2);

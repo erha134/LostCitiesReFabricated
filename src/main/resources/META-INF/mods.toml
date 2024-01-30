@@ -1,23 +1,16 @@
 modLoader="javafml"
-license="MIT License https://github.com/McJtyMods/LostCities/blob/1.16/LICENCE"
+license="MIT License"
 loaderVersion="[31,)"
-issueTrackerURL="http://github.com/McJtyMods/LostCities/issues"
-displayURL="http://github.com/McJtyMods/LostCities/"
-#logoFile="examplemod.png" #optional
-#credits="Thanks for this example mod goes to Java" #optional
-authors="McJty"
+issueTrackerURL="https://github.com/MCTeamPotato/Lost-Cities-Potato-Edition/issues"
+displayURL="https://github.com/MCTeamPotato/Lost-Cities-Potato-Edition"
+
+credits="McJty"
+authors="Team Potato"
 
 [[mods]]
 modId="lostcities"
 version="${file.jarVersion}"
 displayName="LostCities"
-#updateJSONURL="http://myurl.me/" #optional
 description='''
-Generate cities all over the world
+Generate cities all over the world.
 '''
-[[dependencies.lostcities]]
-    modId="forge"
-    mandatory=true
-    versionRange="[31,)"
-    ordering="NONE"
-    side="BOTH"

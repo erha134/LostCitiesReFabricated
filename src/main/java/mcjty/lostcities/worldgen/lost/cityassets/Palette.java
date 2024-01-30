@@ -91,13 +91,6 @@ public class Palette implements ILostCityAsset {
             }
             if (o.has("facing")) {
                 // @todo 1.14
-//                Map<String, Integer> or = new HashMap<>();
-//                JsonObject torchObj = o.get("facing").getAsJsonObject();
-//                getOrientation(or, torchObj, "north");
-//                getOrientation(or, torchObj, "south");
-//                getOrientation(or, torchObj, "west");
-//                getOrientation(or, torchObj, "east");
-//                getOrientation(or, torchObj, "up");
                 torches.add(c);
             }
             if (o.has("block")) {
@@ -123,7 +116,7 @@ public class Palette implements ILostCityAsset {
                         damaged.put(state, dmg);
                     }
                 }
-                addMappingViaState(c, blocks.toArray(new Pair[blocks.size()]));
+                addMappingViaState(c, blocks.toArray(new Pair[0]));
             } else {
                 throw new RuntimeException("Illegal palette!");
             }
@@ -175,8 +168,7 @@ public class Palette implements ILostCityAsset {
     }
 
     @SafeVarargs
-    private final Palette addMappingViaState(char c, Pair<Integer, BlockState>... randomBlocks) {
+    private final void addMappingViaState(char c, Pair<Integer, BlockState>... randomBlocks) {
         palette.put(c, randomBlocks);
-        return this;
     }
 }

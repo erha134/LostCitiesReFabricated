@@ -21,10 +21,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 
 public class Tools {
 
@@ -49,35 +46,31 @@ public class Tools {
             s = split[0];
         }
 
-        if (s.equals("minecraft:stone_brick_stairs")) {
-            return getStairsState(meta, Blocks.STONE_BRICK_STAIRS.defaultBlockState());
-        } else if (s.equals("minecraft:quartz_stairs")) {
-            return getStairsState(meta, Blocks.QUARTZ_STAIRS.defaultBlockState());
-        } else if (s.equals("minecraft:stone_stairs")) {
-            return getStairsState(meta, Blocks.STONE_STAIRS.defaultBlockState());
-        } else if (s.equals("minecraft:rail")) {
-            return getRailState(meta, Blocks.RAIL.defaultBlockState());
-        } else if (s.equals("minecraft:golden_rail")) {
-            return getPoweredRailState(meta, Blocks.POWERED_RAIL.defaultBlockState());
-        } else if (s.equals("minecraft:stone_slab")) {
-            return getStoneSlabState(meta, Blocks.SMOOTH_STONE_SLAB.defaultBlockState());
-        } else if (s.equals("minecraft:redstone_torch")) {
-            return getRedstoneTorchState(meta);
-        } else if (s.equals("minecraft:ladder")) {
-            return getLadderState(meta);
+        switch (s) {
+            case "minecraft:stone_brick_stairs":
+                return getStairsState(meta, Blocks.STONE_BRICK_STAIRS.defaultBlockState());
+            case "minecraft:quartz_stairs":
+                return getStairsState(meta, Blocks.QUARTZ_STAIRS.defaultBlockState());
+            case "minecraft:stone_stairs":
+                return getStairsState(meta, Blocks.STONE_STAIRS.defaultBlockState());
+            case "minecraft:rail":
+                return getRailState(meta, Blocks.RAIL.defaultBlockState());
+            case "minecraft:golden_rail":
+                return getPoweredRailState(meta, Blocks.POWERED_RAIL.defaultBlockState());
+            case "minecraft:stone_slab":
+                return getStoneSlabState(meta, Blocks.SMOOTH_STONE_SLAB.defaultBlockState());
+            case "minecraft:redstone_torch":
+                return getRedstoneTorchState(meta);
+            case "minecraft:ladder":
+                return getLadderState(meta);
         }
 
         String converted = ItemStackDataFlattening.updateItem(s, meta);
-        if (converted != null) {
-            s = converted;
-        } else {
+        if (converted == null) {
             converted = BlockStateFlatteningMap.upgradeBlock(s);
-            if (converted != null) {
-                s = converted;
-            }
         }
+        s = converted;
         Block value = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(s));
-//        System.out.println("original = " + original + ", value = " + value);
         if (value == null) {
             throw new RuntimeException("Cannot find block: '" + s + "'!");
         }
@@ -89,7 +82,7 @@ public class Tools {
         // @todo use IWorld.registryAccess()
         if (biome.getRegistryName() == null) {
             Optional<MutableRegistry<Biome>> biomeRegistry = DynamicRegistries.builtin().registry(Registry.BIOME_REGISTRY);
-            return biomeRegistry.map(r -> r.getResourceKey(biome).map(RegistryKey::location).orElse(null)).orElse(null);
+            return biomeRegistry.flatMap(r -> r.getResourceKey(biome).map(RegistryKey::location)).orElse(null);
         } else {
             return biome.getRegistryName();
         }
@@ -165,7 +158,7 @@ public class Tools {
 
     public static String stateToString(BlockState state) {
         // @todo 1.14
-        return state.getBlock().getRegistryName().toString();
+        return Objects.requireNonNull(state.getBlock().getRegistryName()).toString();
     }
 
     public static String getRandomFromList(Random random, List<Pair<Float, String>> list) {
